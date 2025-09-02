@@ -1,5 +1,6 @@
 import Image from "next/image";
 import styles from "./page.module.css";
+import CardGrid from "./components/CardGrid";
 
 export default function Home() {
   return (
@@ -45,7 +46,16 @@ export default function Home() {
             Read our docs
           </a>
         </div>
+
+        {/* Section Cards */}
+        <section style={{ width: "100%", marginTop: 32 }}>
+          <h2 style={{ textAlign: "center", marginBottom: 16 }}>
+            Nos Packs de Vidéos
+          </h2>
+          <CardGrid />
+        </section>
       </main>
+
       <footer className={styles.footer}>
         <a
           href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
