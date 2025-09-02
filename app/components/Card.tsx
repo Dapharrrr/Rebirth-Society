@@ -7,7 +7,7 @@ export type CardProps = {
   title: string;
   price: number | string;
   description: string;
-  image: string; 
+  image: string;      
   imageAlt?: string;
   onPreview?: () => void;
   className?: string;
@@ -26,13 +26,17 @@ export function Card({
     typeof price === "number" ? `$${price.toFixed(2)}` : String(price);
 
   return (
-    <article className={[styles.card, className].filter(Boolean).join(" ")} role="article">
+    <article
+      className={[styles.card, className].filter(Boolean).join(" ")}
+      role="article"
+    >
       <div className={styles.media}>
         <Image
           src={image}
           alt={imageAlt || title}
           fill
-          sizes="(max-width: 768px) 100vw, 50vw"
+          // 1 colonne <640px, 2 colonnes <1024px, 3 colonnes au-delà
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           priority={false}
         />
       </div>
