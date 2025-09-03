@@ -18,7 +18,8 @@ export default function Home() {
         <button>
           <a href="#cards" style={{ textDecoration: "none", color: "inherit" }}>Explore Packs</a>
         </button>
-
+      </main>
+        
         {/* Section Cards */}
         <section style={{ width: "100%", marginTop: 32 }}>
           <h2 style={{ textAlign: "center", marginBottom: 16 }}>
@@ -26,7 +27,7 @@ export default function Home() {
           </h2>
           <CardGrid />
         </section>
-      </main>
+      
     </div>
   );
 }
