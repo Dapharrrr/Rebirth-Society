@@ -12,7 +12,7 @@ export class VideoController {
 
   async createVideo(request: NextRequest) {
     try {
-      const videoData = await request.json();
+      const videoData: Video & { packId: string } = await request.json();
       if (!videoData.packId) {
         return NextResponse.json(
           { error: 'packId is required' },
