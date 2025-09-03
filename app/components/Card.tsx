@@ -11,6 +11,7 @@ export type CardProps = {
   imageAlt?: string;
   onPreview?: () => void;
   className?: string;
+  videoCount?: number; 
 };
 
 export function Card({
@@ -21,6 +22,7 @@ export function Card({
   imageAlt,
   onPreview,
   className,
+  videoCount,
 }: CardProps) {
   const priceText =
     typeof price === "number" ? `$${price.toFixed(2)}` : String(price);
@@ -35,7 +37,6 @@ export function Card({
           src={image}
           alt={imageAlt || title}
           fill
-          // 1 colonne <640px, 2 colonnes <1024px, 3 colonnes au-delà
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           priority={false}
         />
@@ -48,6 +49,12 @@ export function Card({
         </header>
 
         <p className={styles.description}>{description}</p>
+        
+        {videoCount && (
+          <p className={styles.videoCount}>
+            {videoCount} vidéo{videoCount > 1 ? 's' : ''}
+          </p>
+        )}
 
         <div className={styles.actions}>
           <button
@@ -56,7 +63,7 @@ export function Card({
             onClick={onPreview}
             aria-label={`Voir l'aperçu de ${title}`}
           >
-            Voir l’aperçu
+            Voir l'aperçu
           </button>
         </div>
       </div>

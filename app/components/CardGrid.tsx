@@ -1,60 +1,81 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Card from "./Card";
 import styles from "./card-grid.module.scss";
-
-type Pack = {
-  title: string;
-  price: number;
-  description: string;
-  image: string;
-};
-
-const packs: Pack[] = [
-  {
-    title: "Urban Kiz Essentials",
-    price: 49.99,
-    description: "Absolute Begginer Foundations",
-    image:
-      "https://images.unsplash.com/photo-1551183053-bf91a1d81141?q=80&w=1200&auto=format&fit=crop",
-  },
-  {
-    title: "Ballet Basics",
-    price: 59.99,
-    description:
-      "Technique Drills",
-    image:
-      "https://images.unsplash.com/photo-1551183053-bf91a1d81141?q=80&w=1200&auto=format&fit=crop",
-  },
-  {
-    title: "Contemporary Flow",
-    price: 45.99,
-    description:
-      "Core Figures",
-    image:
-      "https://images.unsplash.com/photo-1551183053-bf91a1d81141?q=80&w=1200&auto=format&fit=crop",
-  },
-  {
-    title: "Salsa Sensations",
-    price: 55.99,
-    description:
-      "Musicality Essentials",
-    image:
-      "https://images.unsplash.com/photo-1551183053-bf91a1d81141?q=80&w=1200&auto=format&fit=crop",
-  },
-];
+import type { Pack } from "@/types/pack";
 
 export function CardGrid() {
+  const [packs, setPacks] = useState<Pack[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    async function fetchPacks() {
+      try {
+        setLoading(true);
+        const response = await fetch('/api/packs');
+        
+        if (!response.ok) {
+          throw new Error('Erreur lors du chargement des packs');
+        }
+        
+        const data = await response.json();
+        setPacks(data);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Une erreur est survenue');
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchPacks();
+  }, []);
+
+  if (loading) {
+    return (
+      <section className={styles.grid} aria-label="Chargement des packs">
+        <div className={styles.loading}>
+          <p>Chargement des packs...</p>
+        </div>
+      </section>
+    );
+  }
+
+  if (error) {
+    return (
+      <section className={styles.grid} aria-label="Erreur de chargement">
+        <div className={styles.error}>
+          <p>Erreur: {error}</p>
+          <button onClick={() => window.location.reload()}>
+            Réessayer
+          </button>
+        </div>
+      </section>
+    );
+  }
+
+  if (packs.length === 0) {
+    return (
+      <section className={styles.grid} aria-label="Aucun pack disponible">
+        <div className={styles.empty}>
+          <p>Aucun pack disponible pour le moment.</p>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section className={styles.grid} aria-label="Nos packs de vidéos">
-      {packs.map((p) => (
+      {packs.map((pack) => (
         <Card
-          key={p.title}
-          title={p.title}
-          price={p.price}
-          description={p.description}
-          image={p.image}
-          onPreview={() => alert(`Aperçu: ${p.title}`)}
+          key={pack.id}
+          title={pack.name}
+          price={pack.price}
+          description={pack.description}
+          image={pack.image}
+          videoCount={pack._count?.videos}
+          onPreview={() => alert(`Aperçu: ${pack.name}`)}
         />
       ))}
     </section>
