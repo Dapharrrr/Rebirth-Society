@@ -40,6 +40,7 @@ model Video {
 
 model Pack {
   id          String   @id @default(cuid())
+  image       String   @unique
   name        String
   description String
   price       Float
