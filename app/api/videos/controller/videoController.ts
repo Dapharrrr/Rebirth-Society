@@ -1,35 +1,26 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { UserService } from '../service/userService';
-import { User } from '../model/userModel';
+import { VideoService } from '../service/videoService';
+import { Video } from '../model/videoModel';
 
-export class UserController {
-  private userService: UserService;
+export class VideoController {
+  private videoService: VideoService;
 
   constructor() {
-    this.userService = new UserService();
+    this.videoService = new VideoService();
   }
 
-  async createUser(request: NextRequest) {
+  async createVideo(request: NextRequest) {
     try {
-      const userData: User = await request.json();
-      const user = await this.userService.createUser(userData);
-      return NextResponse.json(user, { status: 201 });
-    } catch (error) {
-      return NextResponse.json(
-        { error: error instanceof Error ? error.message : 'Unknown error' },
-        { status: 400 }
-      );
-    }
-  }
-
-  async getUserById(request: NextRequest, id: string) {
-    try {
-      const user = await this.userService.getUserById(id);
-      if (!user) {
-        return NextResponse.json({ error: 'User not found' }, { status: 404 });
+      const videoData: Video & { packId: string } = await request.json();
+      if (!videoData.packId) {
+        return NextResponse.json(
+          { error: 'packId is required' },
+          { status: 400 }
+        );
       }
-      return NextResponse.json(user);
+      const video = await this.videoService.createVideo(videoData);
+      return NextResponse.json(video, { status: 201 });
     } catch (error) {
       return NextResponse.json(
         { error: error instanceof Error ? error.message : 'Unknown error' },
@@ -38,10 +29,25 @@ export class UserController {
     }
   }
 
-  async getAllUsers() {
+  async getVideoById(request: NextRequest, id: string) {
     try {
-      const users = await this.userService.getAllUsers();
-      return NextResponse.json(users);
+      const video = await this.videoService.getVideoById(id);
+      if (!video) {
+        return NextResponse.json({ error: 'Video not found' }, { status: 404 });
+      }
+      return NextResponse.json(video);
+    } catch (error) {
+      return NextResponse.json(
+        { error: error instanceof Error ? error.message : 'Unknown error' },
+        { status: 400 }
+      );
+    }
+  }
+
+  async getAllVideos() {
+    try {
+      const videos = await this.videoService.getAllVideos();
+      return NextResponse.json(videos);
     } catch (error) {
       return NextResponse.json(
         { error: error instanceof Error ? error.message : 'Unknown error' },

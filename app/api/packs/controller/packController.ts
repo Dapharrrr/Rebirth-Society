@@ -1,20 +1,20 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { UserService } from '../service/userService';
-import { User } from '../model/userModel';
+import { PackService } from '../service/packService';
+import { Pack } from '../model/packModel';
 
-export class UserController {
-  private userService: UserService;
+export class PackController {
+  private packService: PackService;
 
   constructor() {
-    this.userService = new UserService();
+    this.packService = new PackService();
   }
 
-  async createUser(request: NextRequest) {
+  async createPack(request: NextRequest) {
     try {
-      const userData: User = await request.json();
-      const user = await this.userService.createUser(userData);
-      return NextResponse.json(user, { status: 201 });
+      const packData: Pack = await request.json();
+      const pack = await this.packService.createPack(packData);
+      return NextResponse.json(pack, { status: 201 });
     } catch (error) {
       return NextResponse.json(
         { error: error instanceof Error ? error.message : 'Unknown error' },
@@ -23,13 +23,13 @@ export class UserController {
     }
   }
 
-  async getUserById(request: NextRequest, id: string) {
+  async getPackById(request: NextRequest, id: string) {
     try {
-      const user = await this.userService.getUserById(id);
-      if (!user) {
-        return NextResponse.json({ error: 'User not found' }, { status: 404 });
+      const pack = await this.packService.getPackById(id);
+      if (!pack) {
+        return NextResponse.json({ error: 'Pack not found' }, { status: 404 });
       }
-      return NextResponse.json(user);
+      return NextResponse.json(pack);
     } catch (error) {
       return NextResponse.json(
         { error: error instanceof Error ? error.message : 'Unknown error' },
@@ -38,10 +38,10 @@ export class UserController {
     }
   }
 
-  async getAllUsers() {
+  async getAllPacks() {
     try {
-      const users = await this.userService.getAllUsers();
-      return NextResponse.json(users);
+      const packs = await this.packService.getAllPacks();
+      return NextResponse.json(packs);
     } catch (error) {
       return NextResponse.json(
         { error: error instanceof Error ? error.message : 'Unknown error' },

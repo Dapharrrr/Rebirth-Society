@@ -1,16 +1,16 @@
 import { NextRequest } from 'next/server';
-import { UserController } from './controller/userController';
+import { PackController } from './controller/packController';
 
 export const dynamic = 'force-dynamic';
 
-const userController = new UserController();
+const packController = new PackController();
 
 export async function GET() {
-  return userController.getAllUsers();
+  return packController.getAllPacks();
 }
 
 export async function POST(request: NextRequest) {
-  return userController.createUser(request);
+  return packController.createPack(request);
 }
 
 // export async function DELETE() {

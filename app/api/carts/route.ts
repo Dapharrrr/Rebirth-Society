@@ -1,16 +1,16 @@
 import { NextRequest } from 'next/server';
-import { UserController } from './controller/userController';
+import { CartController } from './controller/cartController';
 
 export const dynamic = 'force-dynamic';
 
-const userController = new UserController();
+const cartController = new CartController();
 
 export async function GET() {
-  return userController.getAllUsers();
+  return cartController.getAllCarts();
 }
 
 export async function POST(request: NextRequest) {
-  return userController.createUser(request);
+  return cartController.createCart(request);
 }
 
 // export async function DELETE() {

@@ -1,16 +1,16 @@
 import { NextRequest } from 'next/server';
-import { UserController } from './controller/userController';
+import { VideoController } from './controller/videoController';
 
 export const dynamic = 'force-dynamic';
 
-const userController = new UserController();
+const videoController = new VideoController();
 
 export async function GET() {
-  return userController.getAllUsers();
+  return videoController.getAllVideos();
 }
 
 export async function POST(request: NextRequest) {
-  return userController.createUser(request);
+  return videoController.createVideo(request);
 }
 
 // export async function DELETE() {
