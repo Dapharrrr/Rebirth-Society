@@ -2,6 +2,7 @@ import Image from "next/image";
 import styles from "./page.module.css";
 import CardGrid from "./components/CardGrid";
 import { Navbar } from "./components/Navbar";
+import { Footer } from "./components/Footer";
 
 export default function Home() {
   return (
@@ -25,7 +26,7 @@ export default function Home() {
           </h2>
           <CardGrid />
         </section>
-      
+      <Footer />
     </div>
   );
 }

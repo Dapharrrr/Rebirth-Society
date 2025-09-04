@@ -1,0 +1,170 @@
+.footer {
+  background-color: #000000;
+  color: #ffffff;
+  padding: 40px 0 0 0;
+  margin-top: 5rem;
+  box-shadow: 0 -2px 8px #ffd700;
+}
+
+.footerContent {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 20px;
+  gap: 40px;
+}
+
+.footerLeft {
+  flex: 2;
+}
+
+.logoSection {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.footerTitle {
+  color: #ffffff;
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.footerTitle:hover {
+  color: #ffd700;
+  transition: color 0.3s ease;
+}
+
+.description {
+  color: #cccccc;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.footerCenter {
+  flex: 2;
+  display: flex;
+  gap: 40px;
+}
+
+.footerSection {
+  flex: 1;
+}
+
+.footerSection h4 {
+  color: #ffd700;
+  margin-bottom: 15px;
+  font-size: 1.1rem;
+}
+
+.footerSection ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footerSection ul li {
+  margin-bottom: 8px;
+  color: #cccccc;
+}
+
+.footerSection ul li a {
+  color: #cccccc;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.footerSection ul li a:hover {
+  color: #ffd700;
+}
+
+.footerRight {
+  flex: 1;
+}
+
+.footerRight h4 {
+  color: #ffd700;
+  margin-bottom: 15px;
+  font-size: 1.1rem;
+}
+
+.socialLinks {
+  display: flex;
+  gap: 15px;
+}
+
+.socialLinks a {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  background-color: #333333;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  font-size: 1.2rem;
+  transition: all 0.3s ease;
+}
+
+.socialLinks a:hover {
+  background-color: #ffd700;
+  transform: translateY(-2px);
+}
+
+.footerBottom {
+  margin-top: 30px;
+  padding: 20px 0;
+  border-top: 1px solid #333333;
+  text-align: center;
+  color: #cccccc;
+  background-color: #111111;
+}
+
+.footerBottom p {
+  margin: 0;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .footerContent {
+    flex-direction: column;
+    gap: 30px;
+    text-align: center;
+  }
+
+  .footerCenter {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .logoSection {
+    justify-content: center;
+  }
+
+  .socialLinks {
+    justify-content: center;
+  }
+
+  .footer {
+    padding: 30px 0 0 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .footerContent {
+    padding: 0 15px;
+  }
+
+  .footerTitle {
+    font-size: 1.3rem;
+  }
+
+  .socialLinks a {
+    width: 35px;
+    height: 35px;
+    font-size: 1rem;
+  }
+}
