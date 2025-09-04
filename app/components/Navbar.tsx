@@ -37,6 +37,7 @@ const Navbar: React.FC = () => {
       <a className={styles.navLink} href="/courses">Courses</a>
       <a className={styles.navLink} href="/about">About</a>
       <a className={styles.navLink} href="/contact">Contact</a>
+      <a className={styles.navLink} href="/admin">Admin</a>
     </div>
 
       {user ? (
