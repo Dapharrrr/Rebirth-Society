@@ -41,14 +41,6 @@ export default function BuyButton({ price, productName = 'Pack', packId }: Props
     marginRight: '0.5rem',
   };
 
-  const secondaryBtn: React.CSSProperties = {
-    padding: '0.5rem 0.75rem',
-    borderRadius: 6,
-    border: '1px solid #ddd',
-    cursor: 'pointer',
-    background: '#fff',
-  };
-
   const handleBuy = async () => {
     try {
       // require local login (simple localStorage session used by this app)

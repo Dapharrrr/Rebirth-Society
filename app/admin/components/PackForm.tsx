@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from 'react'
+import Image from 'next/image'
 import styles from './admin.module.scss'
 
 interface Pack {
@@ -198,7 +199,7 @@ export default function PackForm({
 
       <div className={styles.formGroup}>
         <label htmlFor="image" className={styles.label}>
-          URL de l'image *
+          URL de l&apos;image *
         </label>
         <input
           type="url"
@@ -215,11 +216,13 @@ export default function PackForm({
 
       {formData.image && (
         <div className={styles.formGroup}>
-          <label className={styles.label}>Aperçu de l'image</label>
+          <label className={styles.label}>Aperçu de l&apos;image</label>
           <div className={styles.imagePreview}>
-            <img 
+            <Image 
               src={formData.image} 
               alt="Aperçu" 
+              width={200}
+              height={150}
               onError={(e) => {
                 const target = e.target as HTMLImageElement
                 target.style.display = 'none'
@@ -235,7 +238,7 @@ export default function PackForm({
           disabled={loading}
           className={styles.submitButton}
         >
-          {loading ? 'Sauvegarde...' : (editingPack ? 'Modifier le pack' : 'Créer le pack')}
+          {loading ? 'Sauvegarde...' : (editingPack ? 'Modifier le pack' : 'Cr&eacute;er le pack')}
         </button>
 
         {editingPack && (

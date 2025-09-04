@@ -3,12 +3,13 @@ import { prisma } from '../../../lib/prisma'
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await context.params
     const pack = await prisma.pack.findUnique({
       where: {
-        id: params.id,
+        id,
       },
       include: {
         videos: {
@@ -45,9 +46,10 @@ export async function GET(
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await context.params
     const body = await request.json()
     const { name, description, price, image } = body
 
@@ -70,7 +72,7 @@ export async function PUT(
 
     // Verify if the pack exists
     const existingPack = await prisma.pack.findUnique({
-      where: { id: params.id }
+      where: { id }
     })
 
     if (!existingPack) {
@@ -82,7 +84,7 @@ export async function PUT(
 
     // Update pack
     const updatedPack = await prisma.pack.update({
-      where: { id: params.id },
+      where: { id },
       data: {
         name,
         description,
@@ -106,10 +108,11 @@ export async function PUT(
     })
 
     return NextResponse.json(updatedPack)
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Error modifying pack:', error)
 
-    if (error.code === 'P2002' && error.meta?.target?.includes('image')) {
+    const errObj = error as { code?: string; meta?: { target?: string[] } };
+    if (errObj.code === 'P2002' && errObj.meta?.target?.includes('image')) {
       return NextResponse.json(
         { error: 'This image is already used for another pack' },
         { status: 400 }
@@ -125,12 +128,13 @@ export async function PUT(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await context.params
     // Verify if the pack exists
     const existingPack = await prisma.pack.findUnique({
-      where: { id: params.id },
+      where: { id },
       include: {
         videos: true,
         carts: true,
@@ -160,18 +164,19 @@ export async function DELETE(
 
     // Delete pack
     await prisma.pack.delete({
-      where: { id: params.id }
+      where: { id }
     })
 
     return NextResponse.json(
       { message: 'Pack deleted successfully' },
       { status: 200 }
     )
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Error deleting pack:', error)
 
+    const errObj = error as { code?: string };
     // Error management
-    if (error.code === 'P2003') {
+    if (errObj.code === 'P2003') {
       return NextResponse.json(
         { error: 'Impossible to delete this pack because it is used by others' },
         { status: 400 }

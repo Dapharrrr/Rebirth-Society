@@ -83,11 +83,12 @@ export async function POST(request: NextRequest) {
     })
 
     return NextResponse.json(pack, { status: 201 })
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Error creating pack', error)
     
+    const errObj = error as { code?: string; meta?: { target?: string[] } };
     // Single error image
-    if (error.code === 'P2002' && error.meta?.target?.includes('image')) {
+    if (errObj.code === 'P2002' && errObj.meta?.target?.includes('image')) {
       return NextResponse.json(
         { error: 'This image is already used' },
         { status: 400 }

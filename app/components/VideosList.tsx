@@ -130,22 +130,14 @@ export default function VideosList({ videos, packId, price, productName }: { vid
   };
 
   const modalStyle: React.CSSProperties = {
-    background: '#000000ff',
+    background: '#fff',
     borderRadius: 8,
     maxWidth: 800,
     width: '100%',
     maxHeight: '90vh',
     overflowY: 'auto',
-    boxShadow: '0 10px 30px rgba(83, 83, 83, 0.3)',
+    boxShadow: '0 10px 30px rgba(0,0,0,0.3)',
     padding: '1.25rem',
-  };
-
-  const promptButtonStyle: React.CSSProperties = {
-    marginRight: '0.5rem',
-    padding: '0.5rem 0.75rem',
-    borderRadius: 6,
-    border: 'none',
-    cursor: 'pointer',
   };
 
   return (
