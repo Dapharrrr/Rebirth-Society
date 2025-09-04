@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useState } from 'react';
 import BuyButton from './BuyButton';
+import styles from './video-list.module.scss';
 
 type Video = {
   id: string;
@@ -15,7 +16,7 @@ type ModalState =
   | { type: 'prompt'; video?: Video }
   | null;
 
-export default function VideosList({ videos, packId, styles, price, productName }: { videos: Video[]; packId: string; styles?: Record<string, string>; price?: number; productName?: string }) {
+export default function VideosList({ videos, packId, price, productName }: { videos: Video[]; packId: string; price?: number; productName?: string }) {
   const [allowed, setAllowed] = useState(false);
   const [modal, setModal] = useState<ModalState>(null);
   const [playError, setPlayError] = useState<string | null>(null);
@@ -129,13 +130,13 @@ export default function VideosList({ videos, packId, styles, price, productName 
   };
 
   const modalStyle: React.CSSProperties = {
-    background: '#fff',
+    background: '#000000ff',
     borderRadius: 8,
     maxWidth: 800,
     width: '100%',
     maxHeight: '90vh',
     overflowY: 'auto',
-    boxShadow: '0 10px 30px rgba(0,0,0,0.3)',
+    boxShadow: '0 10px 30px rgba(83, 83, 83, 0.3)',
     padding: '1.25rem',
   };
 
@@ -219,7 +220,7 @@ export default function VideosList({ videos, packId, styles, price, productName 
                   <div style={{ marginTop: 8, color: '#b91c1c' }}>{playError}</div>
                 )}
                 <div style={{ marginTop: 12 }}>
-                  <button onClick={closeModal} style={promptButtonStyle}>
+                  <button onClick={closeModal} className={styles.button}>
                     Close
                   </button>
                 </div>
@@ -227,7 +228,7 @@ export default function VideosList({ videos, packId, styles, price, productName 
             )}
 
             {modal.type === 'prompt' && (
-              <div>
+              <div className={styles?.promptContainer ?? ''}>
                 <h3>Restricted access</h3>
                 <p>
                   {!isLoggedIn
@@ -237,7 +238,7 @@ export default function VideosList({ videos, packId, styles, price, productName 
                 <div style={{ marginTop: 12 }}>
                   {!isLoggedIn ? (
                     <button
-                      style={{ ...promptButtonStyle, background: '#1f2937', color: '#fff' }}
+                      className={styles.button}
                       onClick={() => {
                         const returnTo = encodeURIComponent(window.location.pathname + window.location.search);
                         window.location.href = `/login?next=${returnTo}`;
@@ -251,9 +252,8 @@ export default function VideosList({ videos, packId, styles, price, productName 
                     </span>
                   )}
                   <button
-                    style={{ ...promptButtonStyle, background: '#fff', border: '1px solid #ddd' }}
+                    className={styles.button}
                     onClick={() => {
-                      // simply close the modal
                       closeModal();
                     }}
                   >

@@ -14,6 +14,7 @@ $shadow: 0 1px 0 rgba(29, 34, 45, 0.04), 0 4px 14px rgba(12, 18, 28, 0.08);
   box-shadow: $shadow;
   overflow: hidden;
   transition: transform 160ms ease, box-shadow 160ms ease;
+  color: #000000;
 
   &:hover {
     transform: translateY(-2px);

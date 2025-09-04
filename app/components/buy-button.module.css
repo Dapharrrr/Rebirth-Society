@@ -1,0 +1,15 @@
+.buyButton {
+  background: #ffd700;
+  color: #000000;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: opacity 0.2s ease;
+}
+
+.buyButton:hover {
+  opacity: 0.9;
+  color: #ffd700;
+}

@@ -98,7 +98,7 @@ export default async function PackPage({ params }: PackPageProps) {
         <div className={styles.videosList}>
           {/* Use client-side VideosList which verifies payment on return */}
 
-          <VideosList videos={pack.videos} packId={pack.id} styles={styles} price={pack.price} productName={pack.name} />
+          <VideosList videos={pack.videos} packId={pack.id} price={pack.price} productName={pack.name} />
         </div>
       </section>
     </div>

@@ -1,5 +1,6 @@
 "use client";
 import React from 'react';
+import styles from './buy-button.module.css';
 
 type Props = {
   price: number;
@@ -58,7 +59,7 @@ export default function BuyButton({ price, productName = 'Pack', packId }: Props
   };
 
   return (
-    <button onClick={handleBuy} className="btn">
+    <button onClick={handleBuy} className={styles.buyButton}>
       Buy — {price}€
     </button>
   );
