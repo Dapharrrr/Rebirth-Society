@@ -1,29 +1,40 @@
+// app/admin/components/AdminDashboard.tsx
 "use client"
 
 import { useState, useEffect } from 'react'
 import VideoForm from './VideoForm'
 import VideoList from './VideoList'
+import PackForm from './PackForm'
+import PackList from './PackList'
 import styles from './admin.module.scss'
-import { Navbar } from '../../components/Navbar'
+import { Navbar } from '@/app/components/Navbar'
 
-type Video = {
+interface Video {
   id: string
   title: string
   description: string
   duration: number
   link: string
-  createdAt: string
-  updatedAt: string
-  packId?: string // Ajout optionnel
-  pack?: { // Rendre pack optionnel
+  pack?: {
     id: string
     name: string
   }
 }
 
-type Pack = {
+interface Pack {
   id: string
   name: string
+  description: string
+  price: number
+  image: string
+  videos?: Array<{
+    id: string
+    title: string
+  }>
+  _count?: {
+    videos: number
+    purchases: number
+  }
 }
 
 export default function AdminDashboard() {
@@ -32,46 +43,57 @@ export default function AdminDashboard() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [editingVideo, setEditingVideo] = useState<Video | null>(null)
+  const [editingPack, setEditingPack] = useState<Pack | null>(null)
+  const [activeTab, setActiveTab] = useState<'videos' | 'packs'>('packs')
 
   useEffect(() => {
     fetchData()
   }, [])
 
-  const fetchData = async () => {
-    try {
-      setLoading(true)
-      console.log('Fetching data...') // Debug
-      
-      const [videosResponse, packsResponse] = await Promise.all([
-        fetch('/api/videos'),
-        fetch('/api/packs')
-      ])
+const fetchData = async () => {
+  setLoading(true)
+  setError(null)
 
-      console.log('Videos response status:', videosResponse.status) // Debug
-      console.log('Packs response status:', packsResponse.status) // Debug
-
-      if (!videosResponse.ok || !packsResponse.ok) {
-        throw new Error('Error fetching data from server')
-      }
-
-      const [videosData, packsData] = await Promise.all([
-        videosResponse.json(),
-        packsResponse.json()
-      ])
-
-      console.log('Videos data:', videosData) // Debug
-      console.log('Packs data:', packsData) // Debug
-
+  // Loading videos
+  try {
+    console.log('Fetching videos...')
+    const videosResponse = await fetch('/api/videos')
+    if (videosResponse.ok) {
+      const videosData = await videosResponse.json()
       setVideos(videosData)
-      setPacks(packsData)
-    } catch (err) {
-      console.error('Fetch error:', err) // Debug
-      setError(err instanceof Error ? err.message : 'An error occured')
-    } finally {
-      setLoading(false)
+      console.log('Videos loaded successfully:', videosData.length)
+    } else {
+      console.error('Videos failed:', videosResponse.status)
     }
+  } catch (err) {
+    console.error('Error loading videos:', err)
   }
 
+  // Charger les packs
+  try {
+    console.log('Fetching packs...')
+    const packsResponse = await fetch('/api/packs')
+    if (packsResponse.ok) {
+      const packsData = await packsResponse.json()
+      setPacks(packsData)
+      console.log('Packs loaded successfully:', packsData.length)
+    } else {
+      console.error('Packs failed:', packsResponse.status)
+      // If packs API is not found, continue
+      if (packsResponse.status === 404) {
+        console.log('Packs API not found, continuing without packs')
+        setPacks([])
+      }
+    }
+  } catch (err) {
+    console.error('Error loading packs:', err)
+    setPacks([]) // Continue without packs
+  }
+
+  setLoading(false)
+}
+
+  // Video manager
   const handleVideoAdded = (newVideo: Video) => {
     setVideos(prev => [newVideo, ...prev])
   }
@@ -87,12 +109,38 @@ export default function AdminDashboard() {
     setVideos(prev => prev.filter(video => video.id !== videoId))
   }
 
-  const handleEdit = (video: Video) => {
+  const handleEditVideo = (video: Video) => {
     setEditingVideo(video)
+    setActiveTab('videos')
   }
 
-  const handleCancelEdit = () => {
+  const handleCancelEditVideo = () => {
     setEditingVideo(null)
+  }
+
+  // Pack manager
+  const handlePackAdded = (newPack: Pack) => {
+    setPacks(prev => [newPack, ...prev])
+  }
+
+  const handlePackUpdated = (updatedPack: Pack) => {
+    setPacks(prev => prev.map(pack => 
+      pack.id === updatedPack.id ? updatedPack : pack
+    ))
+    setEditingPack(null)
+  }
+
+  const handlePackDeleted = (packId: string) => {
+    setPacks(prev => prev.filter(pack => pack.id !== packId))
+  }
+
+  const handleEditPack = (pack: Pack) => {
+    setEditingPack(pack)
+    setActiveTab('packs')
+  }
+
+  const handleCancelEditPack = () => {
+    setEditingPack(null)
   }
 
   if (loading) {
@@ -104,7 +152,7 @@ export default function AdminDashboard() {
       <div className={styles.error}>
         <p>Error: {error}</p>
         <button onClick={fetchData} className={styles.retryButton}>
-          Retry
+          Try again
         </button>
       </div>
     )
@@ -112,30 +160,79 @@ export default function AdminDashboard() {
 
   return (
     <div className={styles.dashboard}>
-        <Navbar />
-      <div className={styles.section}>
-        <h2 className={styles.sectionTitle}>
-          {editingVideo ? 'Modify video' : 'Add a new video'}
-        </h2>
-        <VideoForm
-          packs={packs}
-          onVideoAdded={handleVideoAdded}
-          onVideoUpdated={handleVideoUpdated}
-          editingVideo={editingVideo}
-          onCancel={handleCancelEdit}
-        />
+      <Navbar />
+      <div className={styles.dashboardHeader}>
+        <h1>Administration</h1>
+        <div className={styles.tabs}>
+          <button
+            className={`${styles.tab} ${activeTab === 'packs' ? styles.active : ''}`}
+            onClick={() => setActiveTab('packs')}
+          >
+            Packs Manager ({packs.length})
+          </button>
+          <button
+            className={`${styles.tab} ${activeTab === 'videos' ? styles.active : ''}`}
+            onClick={() => setActiveTab('videos')}
+          >
+            Videos Manager ({videos.length})
+          </button>
+        </div>
       </div>
 
-      <div className={styles.section}>
-        <h2 className={styles.sectionTitle}>
-          Videos list ({videos.length})
-        </h2>
-        <VideoList
-          videos={videos}
-          onEdit={handleEdit}
-          onDelete={handleVideoDeleted}
-        />
-      </div>
+      {activeTab === 'packs' && (
+        <>
+          <div className={styles.section}>
+            <h2 className={styles.sectionTitle}>
+              {editingPack ? 'Modify pack' : 'Create a new pack'}
+            </h2>
+            <PackForm
+              onPackAdded={handlePackAdded}
+              onPackUpdated={handlePackUpdated}
+              editingPack={editingPack}
+              onCancel={handleCancelEditPack}
+            />
+          </div>
+
+          <div className={styles.section}>
+            <h2 className={styles.sectionTitle}>
+              Liste des packs ({packs.length})
+            </h2>
+            <PackList
+              packs={packs}
+              onEdit={handleEditPack}
+              onDelete={handlePackDeleted}
+            />
+          </div>
+        </>
+      )}
+
+      {activeTab === 'videos' && (
+        <>
+          <div className={styles.section}>
+            <h2 className={styles.sectionTitle}>
+              {editingVideo ? 'Modify video' : 'Add a new video'}
+            </h2>
+            <VideoForm
+              packs={packs.map(pack => ({ id: pack.id, name: pack.name }))}
+              onVideoAdded={handleVideoAdded}
+              onVideoUpdated={handleVideoUpdated}
+              editingVideo={editingVideo}
+              onCancel={handleCancelEditVideo}
+            />
+          </div>
+
+          <div className={styles.section}>
+            <h2 className={styles.sectionTitle}>
+              Liste des vidéos ({videos.length})
+            </h2>
+            <VideoList
+              videos={videos}
+              onEdit={handleEditVideo}
+              onDelete={handleVideoDeleted}
+            />
+          </div>
+        </>
+      )}
     </div>
   )
 }

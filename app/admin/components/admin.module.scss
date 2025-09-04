@@ -79,7 +79,7 @@
 
   &:focus {
     outline: none;
-    border-color: #2563eb;
+    border-color: #ffd700;
   }
 }
 
@@ -124,11 +124,11 @@
 }
 
 .submitButton {
-  background: #2563eb;
+  background: #ffd700;
   color: white;
 
   &:hover:not(:disabled) {
-    background: #1d4ed8;
+    background: #d97706;
   }
 }
 
@@ -142,7 +142,7 @@
 }
 
 .editButton {
-  background: #f59e0b;
+  background: #ffd700;
   color: white;
 
   &:hover:not(:disabled) {
@@ -281,4 +281,170 @@
   background: #f9fafb;
   border-radius: 8px;
   border: 2px dashed #d1d5db;
+}
+
+// app/admin/admin.module.scss
+// Ajouter ces styles à votre fichier existant :
+
+// Tabs
+.dashboardHeader {
+  margin-bottom: 2rem;
+}
+
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.tab {
+  padding: 0.75rem 1.5rem;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  font-weight: 500;
+  color: #6b7280;
+  transition: all 0.2s ease;
+
+  &:hover {
+    color: #374151;
+    background: #f9fafb;
+  }
+
+  &.active {
+    color: #2563eb;
+    border-bottom-color: #2563eb;
+    background: #f8fafc;
+  }
+}
+
+// Pack Grid
+.packGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.packCard {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+
+  &:hover {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+  }
+}
+
+.packImageContainer {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  background: #f3f4f6;
+}
+
+.packImage {
+  object-fit: cover;
+}
+
+.packContent {
+  padding: 1.5rem;
+}
+
+.packHeader {
+  display: flex;
+  justify-content: between;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.packTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #111827;
+  margin: 0;
+  flex: 1;
+}
+
+.packPrice {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #059669;
+  white-space: nowrap;
+}
+
+.packDescription {
+  color: #6b7280;
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
+
+.packStats {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.packStat {
+  font-size: 0.875rem;
+  color: #6b7280;
+  background: #f3f4f6;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+}
+
+.packVideos {
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background: #f8fafc;
+  border-radius: 8px;
+
+  h4 {
+    margin: 0 0 0.5rem 0;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #374151;
+  }
+
+  ul {
+    margin: 0;
+    padding-left: 1rem;
+    
+    li {
+      font-size: 0.875rem;
+      color: #6b7280;
+      margin-bottom: 0.25rem;
+    }
+  }
+}
+
+.packActions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: flex-end;
+}
+
+// Image preview
+.imagePreview {
+  position: relative;
+  width: 200px;
+  height: 120px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #f9fafb;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 }

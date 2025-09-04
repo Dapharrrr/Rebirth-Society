@@ -1,17 +1,186 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { NextRequest } from 'next/server';
-import { PackController } from '../controller/packController';
+import { NextRequest, NextResponse } from 'next/server'
+import { prisma } from '../../../lib/prisma'
 
-const packController = new PackController();
+export async function GET(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  try {
+    const pack = await prisma.pack.findUnique({
+      where: {
+        id: params.id,
+      },
+      include: {
+        videos: {
+          select: {
+            id: true,
+            title: true,
+          }
+        },
+        _count: {
+          select: {
+            videos: true,
+            carts: true,
+          }
+        }
+      }
+    })
 
-export async function GET(request: NextRequest, context: any) {
-  return packController.getPackById(request, context.params.id);
+    if (!pack) {
+      return NextResponse.json(
+        { error: 'Pack not found' },
+        { status: 404 }
+      )
+    }
+
+    return NextResponse.json(pack)
+  } catch (error) {
+    console.error('Error retrieving packs:', error)
+    return NextResponse.json(
+      { error: 'Error retrieving pack' },
+      { status: 500 }
+    )
+  }
 }
 
-// export async function PUT(request: NextRequest, context: any) {
-//   return userController.updateUser(request, context.params.id);
-// }
+export async function PUT(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  try {
+    const body = await request.json()
+    const { name, description, price, image } = body
 
-// export async function DELETE(request: NextRequest, context: any) {
-//   return userController.deleteUser(context.params.id);
-// }
+    // Data validation
+    if (!name || !description || !price || !image) {
+      return NextResponse.json(
+        { error: 'All fields are required' },
+        { status: 400 }
+      )
+    }
+
+    // Price validation
+    const priceFloat = parseFloat(price)
+    if (isNaN(priceFloat) || priceFloat < 0) {
+      return NextResponse.json(
+        { error: 'Price must be higher than 0' },
+        { status: 400 }
+      )
+    }
+
+    // Verify if the pack exists
+    const existingPack = await prisma.pack.findUnique({
+      where: { id: params.id }
+    })
+
+    if (!existingPack) {
+      return NextResponse.json(
+        { error: 'Pack not found' },
+        { status: 404 }
+      )
+    }
+
+    // Update pack
+    const updatedPack = await prisma.pack.update({
+      where: { id: params.id },
+      data: {
+        name,
+        description,
+        price: priceFloat,
+        image,
+      },
+      include: {
+        videos: {
+          select: {
+            id: true,
+            title: true,
+          }
+        },
+        _count: {
+          select: {
+            videos: true,
+            carts: true,
+          }
+        }
+      }
+    })
+
+    return NextResponse.json(updatedPack)
+  } catch (error: any) {
+    console.error('Error modifying pack:', error)
+
+    if (error.code === 'P2002' && error.meta?.target?.includes('image')) {
+      return NextResponse.json(
+        { error: 'This image is already used for another pack' },
+        { status: 400 }
+      )
+    }
+
+    return NextResponse.json(
+      { error: 'Error modifying pack' },
+      { status: 500 }
+    )
+  }
+}
+
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  try {
+    // Verify if the pack exists
+    const existingPack = await prisma.pack.findUnique({
+      where: { id: params.id },
+      include: {
+        videos: true,
+        carts: true,
+      }
+    })
+
+    if (!existingPack) {
+      return NextResponse.json(
+        { error: 'Pack not found' },
+        { status: 404 }
+      )
+    }
+
+    if (existingPack.videos.length > 0) {
+      return NextResponse.json(
+        { error: 'Impossible to delete a pack that contains videos' },
+        { status: 400 }
+      )
+    }
+
+    if (existingPack.carts.length > 0) {
+      return NextResponse.json(
+        { error: 'Impossible to delete a pack that is in a cart' },
+        { status: 400 }
+      )
+    }
+
+    // Delete pack
+    await prisma.pack.delete({
+      where: { id: params.id }
+    })
+
+    return NextResponse.json(
+      { message: 'Pack deleted successfully' },
+      { status: 200 }
+    )
+  } catch (error: any) {
+    console.error('Error deleting pack:', error)
+
+    // Error management
+    if (error.code === 'P2003') {
+      return NextResponse.json(
+        { error: 'Impossible to delete this pack because it is used by others' },
+        { status: 400 }
+      )
+    }
+
+    return NextResponse.json(
+      { error: 'Error deleting pack' },
+      { status: 500 }
+    )
+  }
+}
