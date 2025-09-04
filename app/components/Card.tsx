@@ -52,7 +52,7 @@ export function Card({
         
         {videoCount && (
           <p className={styles.videoCount}>
-            {videoCount} vidéo{videoCount > 1 ? 's' : ''}
+            {videoCount} video{videoCount > 1 ? 's' : ''}
           </p>
         )}
 
@@ -61,9 +61,9 @@ export function Card({
             type="button"
             className={styles.button}
             onClick={onPreview}
-            aria-label={`Voir l'aperçu de ${title}`}
+            aria-label={`See more ${title}`}
           >
-            Voir l'aperçu
+            See more
           </button>
         </div>
       </div>

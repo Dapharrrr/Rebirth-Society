@@ -30,9 +30,9 @@ export async function GET() {
 
     return NextResponse.json(packs)
   } catch (error) {
-    console.error('Erreur lors de la récupération des packs:', error)
+    console.error('Error retrieving packs:', error)
     return NextResponse.json(
-      { error: 'Erreur lors de la récupération des packs' },
+      { error: 'Error retrieving packs' },
       { status: 500 }
     )
   }

@@ -10,8 +10,8 @@ type Video = {
   duration: number
   link: string
   createdAt: string
-  packId?: string // Ajout du packId optionnel
-  pack?: { // Rendre pack optionnel
+  packId?: string // Add optionnal packId 
+  pack?: { // Make pack optionnal
     id: string
     name: string
   }
@@ -27,7 +27,7 @@ export default function VideoList({ videos, onEdit, onDelete }: VideoListProps) 
   const [deletingId, setDeletingId] = useState<string | null>(null)
 
   const handleDelete = async (videoId: string) => {
-    if (!confirm('Êtes-vous sûr de vouloir supprimer cette vidéo ?')) {
+    if (!confirm('Are you sure you want to delete this video ?')) {
       return
     }
 
@@ -38,13 +38,13 @@ export default function VideoList({ videos, onEdit, onDelete }: VideoListProps) 
       })
 
       if (!response.ok) {
-        throw new Error('Erreur lors de la suppression')
+        throw new Error('Error deleting video')
       }
 
       onDelete(videoId)
     } catch (error) {
-      console.error('Erreur:', error)
-      alert('Erreur lors de la suppression de la vidéo')
+      console.error('Error:', error)
+      alert('Error deleting video')
     } finally {
       setDeletingId(null)
     }
@@ -69,7 +69,7 @@ export default function VideoList({ videos, onEdit, onDelete }: VideoListProps) 
   if (videos.length === 0) {
     return (
       <div className={styles.emptyState}>
-        <p>Aucune vidéo trouvée</p>
+        <p>No video found</p>
       </div>
     )
   }
@@ -83,13 +83,13 @@ export default function VideoList({ videos, onEdit, onDelete }: VideoListProps) 
             <p className={styles.videoDescription}>{video.description}</p>
             <div className={styles.videoMeta}>
               <span className={styles.pack}>
-                Pack: {video.pack?.name || 'Pack non trouvé'}
+                Pack: {video.pack?.name || 'Pack not found'}
               </span>
               <span className={styles.duration}>
-                Durée: {formatDuration(video.duration)}
+                Duration : {formatDuration(video.duration)}
               </span>
               <span className={styles.date}>
-                Créé le: {formatDate(video.createdAt)}
+                Created : {formatDate(video.createdAt)}
               </span>
             </div>
             <a 
@@ -98,7 +98,7 @@ export default function VideoList({ videos, onEdit, onDelete }: VideoListProps) 
               rel="noopener noreferrer"
               className={styles.videoLink}
             >
-              Voir la vidéo ↗
+              See video ↗
             </a>
           </div>
           
@@ -114,7 +114,7 @@ export default function VideoList({ videos, onEdit, onDelete }: VideoListProps) 
               className={styles.deleteButton}
               disabled={deletingId === video.id}
             >
-              {deletingId === video.id ? 'Suppression...' : 'Supprimer'}
+              {deletingId === video.id ? 'Suppression...' : 'Delete'}
             </button>
           </div>
         </div>

@@ -19,9 +19,9 @@ export async function GET() {
 
     return NextResponse.json(videos)
   } catch (error) {
-    console.error('Erreur lors de la récupération des vidéos:', error)
+    console.error('Error retrieving videos:', error)
     return NextResponse.json(
-      { error: 'Erreur lors de la récupération des vidéos' },
+      { error: 'Error retrieving videos' },
       { status: 500 }
     )
   }
@@ -32,15 +32,15 @@ export async function POST(request: NextRequest) {
     const body = await request.json()
     const { title, description, duration, link, packId } = body
 
-    // Validation des données
+    // Data validation
     if (!title || !description || !duration || !link || !packId) {
       return NextResponse.json(
-        { error: 'Tous les champs sont requis' },
+        { error: 'All fields are required' },
         { status: 400 }
       )
     }
 
-    // Vérifier que le pack existe
+    // Check if the pack exists
     const pack = await prisma.pack.findUnique({
       where: { id: packId }
     })
@@ -72,18 +72,18 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(video, { status: 201 })
   } catch (error: any) {
-    console.error('Erreur lors de la création de la vidéo:', error)
+    console.error('Error while creating the video:', error)
     
-    // Gestion de l'erreur de lien unique
+    // Single link error management
     if (error.code === 'P2002' && error.meta?.target?.includes('link')) {
       return NextResponse.json(
-        { error: 'Ce lien de vidéo existe déjà' },
+        { error: 'This video link already exists' },
         { status: 400 }
       )
     }
 
     return NextResponse.json(
-      { error: 'Erreur lors de la création de la vidéo' },
+      { error: 'Error while creating the video' },
       { status: 500 }
     )
   }

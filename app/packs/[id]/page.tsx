@@ -39,7 +39,7 @@ async function getPackById(id: string) {
 
     return pack
   } catch (error) {
-    console.error('Erreur lors de la récupération du pack:', error)
+    console.error('Error retrieving the pack:', error)
     return null
   }
 }

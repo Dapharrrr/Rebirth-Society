@@ -51,7 +51,7 @@ export default function AdminDashboard() {
       console.log('Packs response status:', packsResponse.status) // Debug
 
       if (!videosResponse.ok || !packsResponse.ok) {
-        throw new Error('Erreur lors du chargement des données')
+        throw new Error('Error fetching data from server')
       }
 
       const [videosData, packsData] = await Promise.all([
@@ -66,7 +66,7 @@ export default function AdminDashboard() {
       setPacks(packsData)
     } catch (err) {
       console.error('Fetch error:', err) // Debug
-      setError(err instanceof Error ? err.message : 'Une erreur est survenue')
+      setError(err instanceof Error ? err.message : 'An error occured')
     } finally {
       setLoading(false)
     }
@@ -102,9 +102,9 @@ export default function AdminDashboard() {
   if (error) {
     return (
       <div className={styles.error}>
-        <p>Erreur: {error}</p>
+        <p>Error: {error}</p>
         <button onClick={fetchData} className={styles.retryButton}>
-          Réessayer
+          Retry
         </button>
       </div>
     )

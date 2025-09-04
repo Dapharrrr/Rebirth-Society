@@ -85,7 +85,7 @@ export default function VideoForm({
 
       if (!response.ok) {
         const errorData = await response.json()
-        throw new Error(errorData.error || 'Erreur lors de la sauvegarde')
+        throw new Error(errorData.error || 'Error during save')
       }
 
       const video = await response.json()
@@ -103,7 +103,7 @@ export default function VideoForm({
         })
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Une erreur est survenue')
+      setError(err instanceof Error ? err.message : 'An error occured')
     } finally {
       setLoading(false)
     }

@@ -7,7 +7,7 @@ interface Props {
   }
 }
 
-// GET - Récupérer une vidéo par ID
+// GET - Retrieve a video by ID
 export async function GET(request: NextRequest, { params }: Props) {
   try {
     const video = await prisma.video.findUnique({
@@ -24,36 +24,36 @@ export async function GET(request: NextRequest, { params }: Props) {
 
     if (!video) {
       return NextResponse.json(
-        { error: 'Vidéo non trouvée' },
+        { error: 'Video not found' },
         { status: 404 }
       )
     }
 
     return NextResponse.json(video)
   } catch (error) {
-    console.error('Erreur lors de la récupération de la vidéo:', error)
+    console.error('rror retrieving videos', error)
     return NextResponse.json(
-      { error: 'Erreur lors de la récupération de la vidéo' },
+      { error: 'Error retrieving videos' },
       { status: 500 }
     )
   }
 }
 
-// PUT - Modifier une vidéo
+// PUT - Modify a video
 export async function PUT(request: NextRequest, { params }: Props) {
   try {
     const body = await request.json()
     const { title, description, duration, link, packId } = body
 
-    // Validation des données
+    // Data validation
     if (!title || !description || !duration || !link || !packId) {
       return NextResponse.json(
-        { error: 'Tous les champs sont requis' },
+        { error: 'All fields are required' },
         { status: 400 }
       )
     }
 
-    // Vérifier que la vidéo existe
+    // Check that the video exists
     const existingVideo = await prisma.video.findUnique({
       where: { id: params.id }
     })
@@ -65,19 +65,19 @@ export async function PUT(request: NextRequest, { params }: Props) {
       )
     }
 
-    // Vérifier que le pack existe
+    // Check if the pack exists
     const pack = await prisma.pack.findUnique({
       where: { id: packId }
     })
 
     if (!pack) {
       return NextResponse.json(
-        { error: 'Pack non trouvé' },
+        { error: 'Pack not found' },
         { status: 404 }
       )
     }
 
-    // Mettre à jour la vidéo
+    // Update video
     const updatedVideo = await prisma.video.update({
       where: { id: params.id },
       data: {
@@ -99,51 +99,51 @@ export async function PUT(request: NextRequest, { params }: Props) {
 
     return NextResponse.json(updatedVideo)
   } catch (error: any) {
-    console.error('Erreur lors de la modification de la vidéo:', error)
+    console.error('Error during video modification:', error)
     
-    // Gestion de l'erreur de lien unique
+    // Singe link error management
     if (error.code === 'P2002' && error.meta?.target?.includes('link')) {
       return NextResponse.json(
-        { error: 'Ce lien de vidéo existe déjà' },
+        { error: 'This video link already exists' },
         { status: 400 }
       )
     }
 
     return NextResponse.json(
-      { error: 'Erreur lors de la modification de la vidéo' },
+      { error: 'Error during video modification' },
       { status: 500 }
     )
   }
 }
 
-// DELETE - Supprimer une vidéo
+// DELETE - Delete a video
 export async function DELETE(request: NextRequest, { params }: Props) {
   try {
-    // Vérifier que la vidéo existe
+    // Verify that the video exists
     const existingVideo = await prisma.video.findUnique({
       where: { id: params.id }
     })
 
     if (!existingVideo) {
       return NextResponse.json(
-        { error: 'Vidéo non trouvée' },
+        { error: 'Video not found' },
         { status: 404 }
       )
     }
 
-    // Supprimer la vidéo
+    // Delete video
     await prisma.video.delete({
       where: { id: params.id }
     })
 
     return NextResponse.json(
-      { message: 'Vidéo supprimée avec succès' },
+      { message: 'Video successfully deleted' },
       { status: 200 }
     )
   } catch (error) {
-    console.error('Erreur lors de la suppression de la vidéo:', error)
+    console.error('Error while deleting the video:', error)
     return NextResponse.json(
-      { error: 'Erreur lors de la suppression de la vidéo' },
+      { error: 'Error while deleting the video' },
       { status: 500 }
     )
   }

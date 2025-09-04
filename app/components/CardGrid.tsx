@@ -27,12 +27,12 @@ export function CardGrid() {
       try {
         const response = await fetch('/api/packs');
         if (!response.ok) {
-          throw new Error('Erreur lors du chargement des packs');
+          throw new Error('Error during packs load');
         }
         const data = await response.json();
         setPacks(data);
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'Une erreur est survenue');
+        setError(err instanceof Error ? err.message : 'An error occured');
       } finally {
         setLoading(false);
       }
@@ -47,7 +47,7 @@ export function CardGrid() {
 
   if (loading) {
     return (
-      <section className={styles.grid} aria-label="Chargement des packs">
+      <section className={styles.grid} aria-label="Packs loading">
         <div className={styles.loading}>Chargement des packs...</div>
       </section>
     );
@@ -55,14 +55,14 @@ export function CardGrid() {
 
   if (error) {
     return (
-      <section className={styles.grid} aria-label="Erreur">
-        <div className={styles.error}>Erreur: {error}</div>
+      <section className={styles.grid} aria-label="Error">
+        <div className={styles.error}>Error: {error}</div>
       </section>
     );
   }
 
   return (
-    <section className={styles.grid} aria-label="Nos packs de vidéos">
+    <section className={styles.grid} aria-label="Our video packs">
       {packs.map((pack) => (
         <Card
           key={pack.id}
