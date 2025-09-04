@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Card from "./Card";
 import styles from "./card-grid.module.scss";
-import type { Pack } from "@/types/pack";
+import type { Pack } from "../types/pack";
 
 export function CardGrid() {
   const [packs, setPacks] = useState<Pack[]>([]);
