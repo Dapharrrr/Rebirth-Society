@@ -1,17 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '../../../lib/prisma'
 
-interface Props {
-  params: {
-    id: string
-  }
-}
-
 // GET - Retrieve a video by ID
-export async function GET(request: NextRequest, { params }: Props) {
+export async function GET(request: NextRequest, context: { params: Promise<{ id: string }> }) {
   try {
+    const { id } = await context.params
     const video = await prisma.video.findUnique({
-      where: { id: params.id },
+      where: { id },
       include: {
         pack: {
           select: {
@@ -40,8 +35,9 @@ export async function GET(request: NextRequest, { params }: Props) {
 }
 
 // PUT - Modify a video
-export async function PUT(request: NextRequest, { params }: Props) {
+export async function PUT(request: NextRequest, context: { params: Promise<{ id: string }> }) {
   try {
+    const { id } = await context.params
     const body = await request.json()
     const { title, description, duration, link, packId } = body
 
@@ -55,7 +51,7 @@ export async function PUT(request: NextRequest, { params }: Props) {
 
     // Check that the video exists
     const existingVideo = await prisma.video.findUnique({
-      where: { id: params.id }
+      where: { id }
     })
 
     if (!existingVideo) {
@@ -79,7 +75,7 @@ export async function PUT(request: NextRequest, { params }: Props) {
 
     // Update video
     const updatedVideo = await prisma.video.update({
-      where: { id: params.id },
+      where: { id },
       data: {
         title,
         description,
@@ -98,17 +94,18 @@ export async function PUT(request: NextRequest, { params }: Props) {
     })
 
     return NextResponse.json(updatedVideo)
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Error during video modification:', error)
     
-    // Singe link error management
-    if (error.code === 'P2002' && error.meta?.target?.includes('link')) {
+    // Single link error management
+    const errObj = error as { code?: string; meta?: { target?: string[] } };
+    if (errObj.code === 'P2002' && errObj.meta?.target?.includes('link')) {
       return NextResponse.json(
         { error: 'This video link already exists' },
         { status: 400 }
       )
     }
-
+  
     return NextResponse.json(
       { error: 'Error during video modification' },
       { status: 500 }
@@ -117,11 +114,12 @@ export async function PUT(request: NextRequest, { params }: Props) {
 }
 
 // DELETE - Delete a video
-export async function DELETE(request: NextRequest, { params }: Props) {
+export async function DELETE(request: NextRequest, context: { params: Promise<{ id: string }> }) {
   try {
+    const { id } = await context.params
     // Verify that the video exists
     const existingVideo = await prisma.video.findUnique({
-      where: { id: params.id }
+      where: { id }
     })
 
     if (!existingVideo) {
@@ -133,7 +131,7 @@ export async function DELETE(request: NextRequest, { params }: Props) {
 
     // Delete video
     await prisma.video.delete({
-      where: { id: params.id }
+      where: { id }
     })
 
     return NextResponse.json(

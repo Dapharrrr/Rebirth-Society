@@ -20,7 +20,7 @@ export default function AboutPage() {
       <section className={styles.content}>
         <div className={styles.container}>
           <div className={styles.section}>
-            <h2 className={styles.sectionTitle}>Notre Mission</h2>
+            <h2 className={styles.sectionTitle}>Our Mission</h2>
             <p>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod 
               tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, 
@@ -34,7 +34,7 @@ export default function AboutPage() {
           </div>
 
           <div className={styles.section}>
-            <h2 className={styles.sectionTitle}>Nos Valeurs</h2>
+            <h2 className={styles.sectionTitle}>Our Values</h2>
             <div className={styles.valuesList}>
               <div className={styles.valueItem}>
                 <h3>Creativity</h3>

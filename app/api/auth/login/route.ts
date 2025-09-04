@@ -16,11 +16,14 @@ export async function POST(req: NextRequest) {
     const match = await bcrypt.compare(password, user.password);
     if (!match) return NextResponse.json({ error: 'Invalid credentials' }, { status: 400 });
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { password: _p, ...safeUser } = user as any;
+    const safeUser = { ...user };
+    // remove password field from response
+    // @ts-expect-error password exists on user fetched from DB
+    delete safeUser.password;
 
     return NextResponse.json({ user: safeUser }, { status: 200 });
-  } catch (err: any) {
-    return NextResponse.json({ error: err?.message ?? 'Login failed' }, { status: 500 });
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : 'Login failed';
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }

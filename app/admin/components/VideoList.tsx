@@ -9,7 +9,7 @@ type Video = {
   description: string
   duration: number
   link: string
-  createdAt: string
+  createdAt?: string
   packId?: string // Add optionnal packId 
   pack?: { // Make pack optionnal
     id: string
@@ -89,7 +89,7 @@ export default function VideoList({ videos, onEdit, onDelete }: VideoListProps) 
                 Duration : {formatDuration(video.duration)}
               </span>
               <span className={styles.date}>
-                Created : {formatDate(video.createdAt)}
+                Created : {video.createdAt ? formatDate(video.createdAt) : '-'}
               </span>
             </div>
             <a 

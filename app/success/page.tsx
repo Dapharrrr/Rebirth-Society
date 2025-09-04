@@ -26,8 +26,8 @@ export default function SuccessPage() {
 
   return (
     <div style={{padding: 40}}>
-      <h2>Merci — redirection en cours…</h2>
-      <p>Si vous n'êtes pas redirigé, vous pouvez fermer cette fenêtre et retourner au pack.</p>
+      <h2>Thank you, waiting for redirection…</h2>
+      <p>If you are not being redirected, you can close this window and get back to the pack</p>
     </div>
   );
 }

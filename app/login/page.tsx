@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import "./login.scss";
@@ -34,8 +35,9 @@ export default function LoginPage() {
       setName("");
       setFirstName("");
       setMode("login");
-    } catch (err: any) {
-      setError(err?.message ?? "Error creating account");
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "Error creating account";
+      setError(msg);
     } finally {
       setLoading(false);
     }
@@ -64,8 +66,9 @@ export default function LoginPage() {
       } else {
         setMessage("Sign in successful");
       }
-    } catch (err: any) {
-      setError(err?.message ?? "Error signing in");
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "Error signing in";
+      setError(msg);
     } finally {
       setLoading(false);
     }

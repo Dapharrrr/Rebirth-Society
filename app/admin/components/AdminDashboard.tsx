@@ -1,4 +1,3 @@
-// app/admin/components/AdminDashboard.tsx
 "use client"
 
 import { useState, useEffect } from 'react'
@@ -16,9 +15,14 @@ interface Video {
   duration: number
   link: string
   pack?: {
+  createdAt?: string
+  updatedAt?: string
+  packId?: string 
+  pack?: {
     id: string
     name: string
   }
+}
 }
 
 interface Pack {

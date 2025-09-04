@@ -1,16 +1,18 @@
 "use client";
 import React, { useEffect, useState } from "react";
+import Link from "next/link";
 import Image from "next/image";
 import styles from "./navbar.module.scss";
 
 const Navbar: React.FC = () => {
-  const [user, setUser] = useState<any | null>(null);
+  type SessionUser = { id: string; email: string; name?: string; firstName?: string };
+  const [user, setUser] = useState<SessionUser | null>(null);
 
   useEffect(() => {
     try {
       const raw = localStorage.getItem("user");
       if (raw) setUser(JSON.parse(raw));
-    } catch (e) {
+    } catch {
       setUser(null);
     }
   }, []);
@@ -18,7 +20,7 @@ const Navbar: React.FC = () => {
   function handleLogout() {
     try {
       localStorage.removeItem("user");
-    } catch (e) {
+    } catch {
       // ignore
     }
     setUser(null);
@@ -29,8 +31,8 @@ const Navbar: React.FC = () => {
   return (
     <nav className={styles.navigation} aria-label="Main navigation">
       <div className={styles.navLeft}>
-        <a href="/"><Image src="/images/logo.jpg" alt="Logo of the school" width={50} height={50} /></a>
-        <a href="/"><h1 className={styles.title}>Rebirth Society</h1></a>
+        <Link href="/"><Image src="/images/logo.jpg" alt="Logo of the school" width={50} height={50} /></Link>
+        <Link href="/"><h1 className={styles.title}>Rebirth Society</h1></Link>
       </div>
 
     <div className={styles.navCenter}>
@@ -45,7 +47,7 @@ const Navbar: React.FC = () => {
           Logout
         </button>
       ) : (
-        <a className={styles.login} href="/login">Login</a>
+        <Link className={styles.login} href="/login">Login</Link>
       )}
     </nav>
   );

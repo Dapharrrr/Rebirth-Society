@@ -47,9 +47,14 @@ $shadow: 0 1px 0 rgba(29, 34, 45, 0.04), 0 4px 14px rgba(12, 18, 28, 0.08);
 
 .title {
   margin: 0;
+  text-align: left;
   font-size: clamp(16px, 2vw, 18px);
   font-weight: 700;
   color: $text;
+}
+
+.videoCount {
+  text-align: left;
 }
 
 .price {
@@ -64,6 +69,7 @@ $shadow: 0 1px 0 rgba(29, 34, 45, 0.04), 0 4px 14px rgba(12, 18, 28, 0.08);
   color: $muted;
   font-size: 14px;
   line-height: 1.5;
+  text-align: left;
 }
 
 .actions {
