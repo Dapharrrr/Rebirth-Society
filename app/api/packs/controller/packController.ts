@@ -10,6 +10,15 @@ export class PackController {
     this.packService = new PackService();
   }
 
+   /**
+   * Create a new pack in the database.
+   * - Reads JSON data from the request body.
+   * - Passes the data to the PackService to persist it.
+   * 
+   * @param request - The incoming HTTP request with pack data in the body.
+   * @returns A JSON response with the created pack and status 201 on success,
+   *          or an error message with status 400 on failure.
+   */
   async createPack(request: NextRequest) {
     try {
       const packData: Pack = await request.json();
@@ -23,6 +32,14 @@ export class PackController {
     }
   }
 
+  /**
+   * Retrieve a pack by its unique ID.
+   * 
+   * @param request - The incoming HTTP request.
+   * @param id - The ID of the pack to retrieve.
+   * @returns A JSON response containing the pack if found,
+   *          404 if not found, or 400 if an error occurs.
+   */
   async getPackById(request: NextRequest, id: string) {
     try {
       const pack = await this.packService.getPackById(id);
@@ -38,6 +55,12 @@ export class PackController {
     }
   }
 
+  /**
+   * Retrieve all packs from the database.
+   * 
+   * @returns A JSON response with the list of all packs,
+   *          or an error message with status 400 if retrieval fails.
+   */
   async getAllPacks() {
     try {
       const packs = await this.packService.getAllPacks();
