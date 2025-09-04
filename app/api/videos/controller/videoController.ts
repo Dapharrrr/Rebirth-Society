@@ -10,6 +10,16 @@ export class VideoController {
     this.videoService = new VideoService();
   }
 
+  /**
+   * Create a new video in the database.
+   * - Reads JSON data from the request body.
+   * - Ensures that `packId` is provided to associate the video with a pack.
+   * - Delegates to VideoService to persist the video.
+   * 
+   * @param request - The incoming HTTP request containing video data.
+   * @returns A JSON response with the created video and status 201 on success,
+   *          or an error message with status 400 if validation fails or an error occurs.
+   */
   async createVideo(request: NextRequest) {
     try {
       const videoData: Video & { packId: string } = await request.json();
@@ -29,6 +39,14 @@ export class VideoController {
     }
   }
 
+  /**
+   * Retrieve a video by its unique ID.
+   * 
+   * @param request - The incoming HTTP request.
+   * @param id - The ID of the video to fetch.
+   * @returns A JSON response containing the video if found,
+   *          404 if not found, or 400 if an error occurs.
+   */
   async getVideoById(request: NextRequest, id: string) {
     try {
       const video = await this.videoService.getVideoById(id);
@@ -44,6 +62,12 @@ export class VideoController {
     }
   }
 
+  /**
+   * Retrieve all videos from the database.
+   * 
+   * @returns A JSON response with the list of all videos,
+   *          or an error message with status 400 if retrieval fails.
+   */
   async getAllVideos() {
     try {
       const videos = await this.videoService.getAllVideos();
