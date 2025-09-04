@@ -29,13 +29,13 @@ const Navbar: React.FC = () => {
   return (
     <nav className={styles.navigation} aria-label="Main navigation">
       <div className={styles.navLeft}>
-        <a href="#"><Image src="/images/logo.jpg" alt="Logo of the school" width={50} height={50} /></a>
-        <h1 className={styles.title}>Rebirth Society</h1>
+        <a href="/"><Image src="/images/logo.jpg" alt="Logo of the school" width={50} height={50} /></a>
+        <a href="/"><h1 className={styles.title}>Rebirth Society</h1></a>
       </div>
 
     <div className={styles.navCenter}>
-      <a className={styles.navLink} href="#learn">Courses</a>
-      <a className={styles.navLink} href="#examples">About</a>
+      <a className={styles.navLink} href="/courses">Courses</a>
+      <a className={styles.navLink} href="/about">About</a>
       <a className={styles.navLink} href="/contact">Contact</a>
     </div>
 
