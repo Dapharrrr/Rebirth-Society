@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import styles from "./navbar.module.scss";
+import AdminLink from "./AdminLink";
 
 const Navbar: React.FC = () => {
   type SessionUser = { id: string; email: string; name?: string; firstName?: string };
@@ -36,10 +37,10 @@ const Navbar: React.FC = () => {
       </div>
 
     <div className={styles.navCenter}>
-      <a className={styles.navLink} href="/courses">Courses</a>
-      <a className={styles.navLink} href="/about">About</a>
-      <a className={styles.navLink} href="/contact">Contact</a>
-      <a className={styles.navLink} href="/admin">Admin</a>
+      <Link className={styles.navLink} href="/courses">Courses</Link>
+      <Link className={styles.navLink} href="/about">About</Link>
+      <Link className={styles.navLink} href="/contact">Contact</Link>
+      <AdminLink className={styles.navLink} />
     </div>
 
       {user ? (
