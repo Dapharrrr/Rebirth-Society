@@ -13,6 +13,21 @@ export class PaymentController {
   async createCheckoutSession(request: NextRequest) {
     try {
       const data = await request.json();
+      try {
+        const userId = data?.userId as string | undefined;
+        const packId = data?.packId as string | undefined;
+        if (userId && packId) {
+          const existing = await prisma.purchase.findFirst({ where: { userId, packId } });
+          if (existing) {
+            return NextResponse.json(
+              { error: 'ALREADY_PURCHASED' },
+              { status: 400 }
+            );
+          }
+        }
+      } catch (guardErr) {
+        console.error('Duplicate purchase guard error', guardErr);
+      }
       const session = await this.paymentService.createCheckoutSession(data);
       return NextResponse.json(session);
     } catch (error) {
