@@ -1,11 +1,13 @@
 "use client";
 import React, { useEffect, useState } from 'react';
+import BuyButton from './BuyButton';
 
 type Video = {
   id: string;
   title: string;
   description: string;
   duration: number;
+  link: string;
 };
 
 type ModalState =
@@ -13,9 +15,11 @@ type ModalState =
   | { type: 'prompt'; video?: Video }
   | null;
 
-export default function VideosList({ videos, packId, styles }: { videos: Video[]; packId: string; styles?: any }) {
+export default function VideosList({ videos, packId, styles, price, productName }: { videos: Video[]; packId: string; styles?: Record<string, string>; price?: number; productName?: string }) {
   const [allowed, setAllowed] = useState(false);
   const [modal, setModal] = useState<ModalState>(null);
+  const [playError, setPlayError] = useState<string | null>(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -42,6 +46,7 @@ export default function VideosList({ videos, packId, styles }: { videos: Video[]
       // no session_id, check if local user already purchased the pack
       const userRaw = localStorage.getItem('user');
       if (userRaw) {
+        setIsLoggedIn(true);
         const user = JSON.parse(userRaw);
         fetch('/api/purchases/has', {
           method: 'POST',
@@ -53,6 +58,8 @@ export default function VideosList({ videos, packId, styles }: { videos: Video[]
             if (data?.has) setAllowed(true);
           })
           .catch((e) => console.error('purchases check error', e));
+      } else {
+        setIsLoggedIn(false);
       }
     }
 
@@ -69,10 +76,45 @@ export default function VideosList({ videos, packId, styles }: { videos: Video[]
       setModal({ type: 'prompt', video });
       return;
     }
+    setPlayError(null);
     setModal({ type: 'video', video });
   };
 
-  const closeModal = () => setModal(null);
+  const closeModal = () => {
+    setPlayError(null);
+    setModal(null);
+  };
+
+  const classifyLink = (url: string): { kind: 'youtube' | 'vimeo' | 'file'; embedUrl?: string } => {
+    try {
+      const u = new URL(url);
+      const host = u.hostname.replace('www.', '');
+      // YouTube
+      if (host === 'youtube.com' || host === 'youtu.be') {
+        // convert to embed URL
+        let videoId = '';
+        if (host === 'youtu.be') {
+          videoId = u.pathname.slice(1);
+        } else {
+          videoId = u.searchParams.get('v') || '';
+        }
+        if (videoId) {
+          return { kind: 'youtube', embedUrl: `https://www.youtube.com/embed/${videoId}` };
+        }
+      }
+      // Vimeo
+      if (host === 'vimeo.com' || host === 'player.vimeo.com') {
+        const parts = u.pathname.split('/').filter(Boolean);
+        const id = parts[0] || '';
+        if (id) {
+          return { kind: 'vimeo', embedUrl: `https://player.vimeo.com/video/${id}` };
+        }
+      }
+      return { kind: 'file' };
+    } catch {
+      return { kind: 'file' };
+    }
+  };
 
   // simple inline styles to avoid adding new css files while keeping layout untouched
   const overlayStyle: React.CSSProperties = {
@@ -131,10 +173,54 @@ export default function VideosList({ videos, packId, styles }: { videos: Video[]
               <div>
                 <h3>{modal.video?.title}</h3>
                 <p>{modal.video?.description}</p>
-                {/* If you have a video URL, replace below with a video player (video tag or player component) */}
+                <div style={{ marginTop: 12 }}>
+                  {modal.video?.link ? (
+                    (() => {
+                      const cls = classifyLink(modal.video!.link);
+                      if (cls.kind === 'youtube' && cls.embedUrl) {
+                        return (
+                          <iframe
+                            src={cls.embedUrl}
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowFullScreen
+                            style={{ width: '100%', aspectRatio: '16 / 9', border: 0, borderRadius: 8 }}
+                            title={modal.video!.title}
+                          />
+                        );
+                      }
+                      if (cls.kind === 'vimeo' && cls.embedUrl) {
+                        return (
+                          <iframe
+                            src={cls.embedUrl}
+                            allow="autoplay; fullscreen; picture-in-picture"
+                            allowFullScreen
+                            style={{ width: '100%', aspectRatio: '16 / 9', border: 0, borderRadius: 8 }}
+                            title={modal.video!.title}
+                          />
+                        );
+                      }
+                      return (
+                        <div>
+                          <video
+                            src={modal.video!.link}
+                            onError={() => setPlayError('Impossible de lire cette vidéo. Vérifiez le lien ou le format (ex: MP4).')}
+                            controls
+                            preload="metadata"
+                            style={{ width: '100%', borderRadius: 8, background: '#000' }}
+                          />
+                        </div>
+                      );
+                    })()
+                  ) : (
+                    <div>No video source available.</div>
+                  )}
+                </div>
+                {playError && (
+                  <div style={{ marginTop: 8, color: '#b91c1c' }}>{playError}</div>
+                )}
                 <div style={{ marginTop: 12 }}>
                   <button onClick={closeModal} style={promptButtonStyle}>
-                    Fermer
+                    Close
                   </button>
                 </div>
               </div>
@@ -142,31 +228,36 @@ export default function VideosList({ videos, packId, styles }: { videos: Video[]
 
             {modal.type === 'prompt' && (
               <div>
-                <h3>Accès restreint</h3>
+                <h3>Restricted access</h3>
                 <p>
-                  Vous devez acheter ce pack pour visionner les vidéos. Connectez-vous ou achetez le pack pour continuer.
+                  {!isLoggedIn
+                    ? 'You must purchase this pack to watch the videos. Please log in to continue.'
+                    : `You must purchase this pack to watch the videos.${typeof price === 'number' ? `` : ''}`}
                 </p>
                 <div style={{ marginTop: 12 }}>
-                  <button
-                    style={{ ...promptButtonStyle, background: '#1f2937', color: '#fff' }}
-                    onClick={() => {
-                      // redirect to login with return to current page
-                      const returnTo = encodeURIComponent(window.location.pathname + window.location.search);
-                      window.location.href = `/login?next=${returnTo}`;
-                    }}
-                  >
-                    Se connecter
-                  </button>
+                  {!isLoggedIn ? (
+                    <button
+                      style={{ ...promptButtonStyle, background: '#1f2937', color: '#fff' }}
+                      onClick={() => {
+                        const returnTo = encodeURIComponent(window.location.pathname + window.location.search);
+                        window.location.href = `/login?next=${returnTo}`;
+                      }}
+                    >
+                      Log in
+                    </button>
+                  ) : (
+                    <span>
+                      <BuyButton price={price ?? 0} productName={productName ?? 'Pack'} packId={packId} />
+                    </span>
+                  )}
                   <button
                     style={{ ...promptButtonStyle, background: '#fff', border: '1px solid #ddd' }}
                     onClick={() => {
-                      // ask the user to click the Acheter button on the page; keep simple to avoid duplicating buy logic here
-                      // focus the top of the page where the buy button usually is
-                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                      // simply close the modal
                       closeModal();
                     }}
                   >
-                    Acheter le pack
+                    Close
                   </button>
                 </div>
               </div>

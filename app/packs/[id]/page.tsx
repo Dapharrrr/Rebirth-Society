@@ -23,6 +23,7 @@ async function getPackById(id: string) {
             description: true,
             duration: true,
             createdAt: true,
+            link: true,
           },
           orderBy: {
             createdAt: 'asc'
@@ -96,8 +97,8 @@ export default async function PackPage({ params }: PackPageProps) {
         <h2 className={styles.sectionTitle}>Contenu du pack</h2>
         <div className={styles.videosList}>
           {/* Use client-side VideosList which verifies payment on return */}
-          {/* @ts-ignore Server Component -> Client */}
-          <VideosList videos={pack.videos} packId={pack.id} styles={styles} />
+
+          <VideosList videos={pack.videos} packId={pack.id} styles={styles} price={pack.price} productName={pack.name} />
         </div>
       </section>
     </div>
