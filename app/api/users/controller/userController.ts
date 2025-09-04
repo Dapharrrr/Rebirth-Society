@@ -10,6 +10,15 @@ export class UserController {
     this.userService = new UserService();
   }
 
+  /**
+   * Create a new user in the database.
+   * - Reads JSON data from the request body.
+   * - Delegates to UserService to persist the user.
+   * 
+   * @param request - The incoming HTTP request containing user data.
+   * @returns A JSON response with the created user and status 201 on success,
+   *          or an error message with status 400 on failure.
+   */
   async createUser(request: NextRequest) {
     try {
       const userData: User = await request.json();
@@ -23,6 +32,14 @@ export class UserController {
     }
   }
 
+  /**
+   * Retrieve a user by their unique ID.
+   * 
+   * @param request - The incoming HTTP request.
+   * @param id - The ID of the user to fetch.
+   * @returns A JSON response containing the user if found,
+   *          404 if not found, or 400 if an error occurs.
+   */
   async getUserById(request: NextRequest, id: string) {
     try {
       const user = await this.userService.getUserById(id);
@@ -38,6 +55,12 @@ export class UserController {
     }
   }
 
+  /**
+   * Retrieve all users from the database.
+   * 
+   * @returns A JSON response with the list of all users,
+   *          or an error message with status 400 if retrieval fails.
+   */
   async getAllUsers() {
     try {
       const users = await this.userService.getAllUsers();

@@ -5,6 +5,16 @@ import { User } from '../model/userModel';
 const prisma = new PrismaClient();
 
 export class UserService {
+  /**
+   * Create a new user in the database.
+   * - Validates email format.
+   * - Validates password strength (min 8 characters, uppercase, lowercase, digit, special character).
+   * - Hashes the password before storing it.
+   * 
+   * @param data - The user data to create, including email and password.
+   * @returns A Promise that resolves to the newly created User.
+   * @throws An error if email or password validation fails.
+   */
   async createUser(data: User): Promise<User> {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(data.email)) {
@@ -24,18 +34,36 @@ export class UserService {
     });
   }
 
+  /**
+   * Retrieve a user by their unique ID.
+   * 
+   * @param id - The ID of the user to fetch.
+   * @returns A Promise that resolves to the User if found, or `null` if not found.
+   */
   async getUserById(id: string): Promise<User | null> {
     return prisma.user.findUnique({
       where: { id },
     });
   }
 
+  /**
+   * Retrieve a user by their email address.
+   * Useful for login and authentication.
+   * 
+   * @param email - The email of the user to fetch.
+   * @returns A Promise that resolves to the User if found, or `null` if not found.
+   */
   async getUserByEmail(email: string): Promise<User | null> {
     return prisma.user.findUnique({
       where: { email },
     });
   }
 
+  /**
+   * Retrieve all users from the database.
+   * 
+   * @returns A Promise that resolves to an array of all Users.
+   */
   async getAllUsers(): Promise<User[]> {
     return prisma.user.findMany();
   }

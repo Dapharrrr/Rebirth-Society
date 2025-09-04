@@ -10,6 +10,12 @@ export class CartController {
     this.cartService = new CartService();
   }
 
+  /**
+   * Create a new cart.
+   * Reads the request body as JSON, validates it against the Cart model,
+   * then delegates to CartService to persist the new cart.
+   * Returns the created cart with a 201 status, or an error with 400 status.
+   */
   async createCart(request: NextRequest) {
     try {
       const cartData: Cart = await request.json();
@@ -23,6 +29,11 @@ export class CartController {
     }
   }
 
+   /**
+   * Retrieve a cart by its ID.
+   * Delegates to CartService to fetch the cart by its identifier.
+   * Returns the cart if found, or a 404 error if the cart does not exist.
+   */
   async getCartById(request: NextRequest, id: string) {
     try {
       const cart = await this.cartService.getCartById(id);
@@ -38,6 +49,11 @@ export class CartController {
     }
   }
 
+  /**
+   * Retrieve all carts.
+   * Delegates to CartService to fetch all existing carts in the database.
+   * Returns an array of carts, or a 400 error if retrieval fails.
+   */
   async getAllCarts() {
     try {
       const carts = await this.cartService.getAllCarts();
