@@ -18,6 +18,8 @@ interface CheckoutSessionData {
   productName?: string;
   successUrl: string;
   cancelUrl: string;
+  packId?: string;
+  userId?: string;
 }
 
 interface CheckoutSessionResponse {
@@ -51,8 +53,29 @@ export class PaymentService {
       mode: 'payment',
       success_url: successUrl,
       cancel_url: cancelUrl,
+      metadata: {
+        packId: data.packId ?? '',
+        userId: data.userId ?? '',
+      },
     });
 
     return { id: session.id, url: session.url };
+  }
+  
+  async retrieveSession(sessionId: string) {
+    if (!sessionId) throw new Error('sessionId is required');
+
+    const session = await stripe.checkout.sessions.retrieve(sessionId, {
+      expand: ['payment_intent']
+    });
+
+    return {
+      id: session.id,
+      payment_status: session.payment_status,
+      amount_total: session.amount_total,
+      currency: session.currency,
+  payment_intent: session.payment_intent,
+  metadata: session.metadata,
+    };
   }
 }
