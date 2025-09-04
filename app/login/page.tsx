@@ -91,9 +91,13 @@ export default function LoginPage() {
 
         {mode === "register" ? (
           <form onSubmit={handleRegister} className="form">
+            <label htmlFor="FirstName">First name</label>
             <input value={firstName} onChange={(e) => setFirstName(e.target.value)} placeholder="First name" className="input" />
+            <label htmlFor="Name">Name</label>
             <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Last name" className="input" />
+            <label htmlFor="Email">Email</label>
             <input value={email} onChange={(e) => setEmail(e.target.value)} type="email" placeholder="Email" className="input" />
+            <label htmlFor="Password">Password</label>
             <input value={password} onChange={(e) => setPassword(e.target.value)} type="password" placeholder="Password" className="input" />
             <button disabled={loading} type="submit" className="btn btn-primary">
               {loading ? "Creating..." : "Create account"}
@@ -101,7 +105,9 @@ export default function LoginPage() {
           </form>
         ) : (
           <form onSubmit={handleLogin} className="form">
+            <label htmlFor="Email">Email</label>
             <input value={email} onChange={(e) => setEmail(e.target.value)} type="email" placeholder="Email" className="input" />
+            <label htmlFor="Password">Password</label>
             <input value={password} onChange={(e) => setPassword(e.target.value)} type="password" placeholder="Password" className="input" />
             <button disabled={loading} type="submit" className="btn btn-primary">
               {loading ? "Signing in..." : "Sign in"}

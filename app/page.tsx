@@ -10,14 +10,12 @@ export default function Home() {
         <Navbar />
       </header>
       <main className={styles.main}>
-        <h1 className={styles.title}>Welcome to Rebirth Society School</h1>
-        <p className={styles.description}>
-          Explore our curated video packs to enhance your learning experience. If you're beginer or advanced, we have the perfect course for you !
-        </p>
-
-        <button>
-          <a href="#cards" style={{ textDecoration: "none", color: "inherit" }}>Explore Packs</a>
-        </button>
+        <div className={styles.presentation}>
+          <h1 className={styles.title}>Welcome to Rebirth Society School</h1>
+          <p className={styles.description}>
+            Explore our curated video packs to enhance your learning experience. If you're beginer or advanced, we have the perfect course for you !
+          </p>
+        </div>
       </main>
         
         {/* Section Cards */}

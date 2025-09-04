@@ -26,9 +26,24 @@ p {
   margin-bottom: 20px;
 }
 
+*:focus,
+*:focus-visible {
+  outline: none;
+}
+
+input:focus,
+input:focus-visible,
+button:focus,
+button:focus-visible,
+a:focus,
+a:focus-visible {
+  border: 2px solid #ffd700;
+  border-radius: 4px;
+}
+
 button {
-  background-color: #0070f3;
-  color: #fff;
+  background-color: #000000;
+  color: #ffd700;
   border: none;
   padding: 10px 20px;
   border-radius: 5px;
@@ -37,5 +52,5 @@ button {
 }
 
 button:hover {
-  background-color: #005bb5;
+  background-color: #444444;
 }
