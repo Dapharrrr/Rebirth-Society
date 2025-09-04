@@ -98,17 +98,18 @@ export async function PUT(request: NextRequest, { params }: Props) {
     })
 
     return NextResponse.json(updatedVideo)
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Error during video modification:', error)
     
-    // Singe link error management
-    if (error.code === 'P2002' && error.meta?.target?.includes('link')) {
+    // Single link error management
+    const errObj = error as { code?: string; meta?: { target?: string[] } };
+    if (errObj.code === 'P2002' && errObj.meta?.target?.includes('link')) {
       return NextResponse.json(
         { error: 'This video link already exists' },
         { status: 400 }
       )
     }
-
+ 
     return NextResponse.json(
       { error: 'Error during video modification' },
       { status: 500 }

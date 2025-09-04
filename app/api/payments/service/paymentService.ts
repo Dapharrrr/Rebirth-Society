@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import Stripe from 'stripe';
 
 const stripeSecret = process.env.STRIPE_SECRET_KEY;

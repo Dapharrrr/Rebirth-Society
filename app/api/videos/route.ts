@@ -71,11 +71,12 @@ export async function POST(request: NextRequest) {
     })
 
     return NextResponse.json(video, { status: 201 })
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Error while creating the video:', error)
     
     // Single link error management
-    if (error.code === 'P2002' && error.meta?.target?.includes('link')) {
+    const errObj = error as { code?: string; meta?: { target?: string[] } };
+    if (errObj.code === 'P2002' && errObj.meta?.target?.includes('link')) {
       return NextResponse.json(
         { error: 'This video link already exists' },
         { status: 400 }

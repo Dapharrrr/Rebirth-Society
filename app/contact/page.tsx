@@ -24,7 +24,7 @@ export default function ContactPage() {
       console.log("Form submitted:", formData);
       setStatus("Message sent successfully!");
       setFormData({ name: "", email: "", message: "" });
-    } catch (_err) {
+    } catch {
       setStatus("Something went wrong. Please try again.");
     }
   };

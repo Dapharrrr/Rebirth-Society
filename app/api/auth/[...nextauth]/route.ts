@@ -5,11 +5,11 @@ const handler = NextAuth({
   secret: process.env.NEXTAUTH_SECRET ?? 'change-me',
   session: { strategy: 'jwt' },
   callbacks: {
-    async jwt({ token }: { token: any }) {
+    async jwt({ token }: { token: Record<string, unknown> }) {
       return token;
     },
-    async session({ session, token }: { session: any; token: any }) {
-      if (token) session.user = { ...session.user, ...token };
+    async session({ session, token }: { session: { user?: Record<string, unknown> } & Record<string, unknown>; token: Record<string, unknown> }) {
+      session.user = { ...(session.user ?? {}), ...token };
       return session;
     },
   },
