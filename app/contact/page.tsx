@@ -3,6 +3,7 @@
 import { useState } from "react";
 import styles from "./contact.module.scss";
 import { Navbar } from "../components/Navbar";
+import { Footer } from "../components/Footer";
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -81,6 +82,7 @@ export default function ContactPage() {
           {status && <p className={styles.status}>{status}</p>}
         </form>
       </div>
+      <Footer />
     </>
   );
 }

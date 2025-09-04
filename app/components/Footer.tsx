@@ -13,7 +13,7 @@ const Footer: React.FC = () => {
             <h3 className={styles.footerTitle}>Rebirth Society</h3>
           </div>
           <p className={styles.description}>
-            Transforming lives through quality education and personal development.
+            Urban Kiz School based in Paris, offering curated video packs to enhance your learning experience.
           </p>
         </div>
 

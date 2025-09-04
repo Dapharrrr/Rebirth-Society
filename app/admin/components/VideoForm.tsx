@@ -131,7 +131,7 @@ export default function VideoForm({
       
       <div className={styles.formGroup}>
         <label htmlFor="title" className={styles.label}>
-          Titre de la vidéo *
+          Video title *
         </label>
         <input
           type="text"
@@ -141,7 +141,7 @@ export default function VideoForm({
           onChange={handleChange}
           className={styles.input}
           required
-          placeholder="Titre de la vidéo"
+          placeholder="Video title"
         />
       </div>
 
@@ -156,7 +156,7 @@ export default function VideoForm({
           onChange={handleChange}
           className={styles.textarea}
           required
-          placeholder="Description de la vidéo"
+          placeholder="Video summary"
           rows={3}
         />
       </div>
@@ -164,7 +164,7 @@ export default function VideoForm({
       <div className={styles.formRow}>
         <div className={styles.formGroup}>
           <label htmlFor="duration" className={styles.label}>
-            Durée (en secondes) *
+            Duration (seconds) *
           </label>
           <input
             type="number"
@@ -196,7 +196,7 @@ export default function VideoForm({
             className={styles.select}
             required
           >
-            <option value="">Sélectionner un pack</option>
+            <option value="">Select a pack</option>
             {packs.map((pack) => (
               <option key={pack.id} value={pack.id}>
                 {pack.name}
@@ -208,7 +208,7 @@ export default function VideoForm({
 
       <div className={styles.formGroup}>
         <label htmlFor="link" className={styles.label}>
-          Lien de la vidéo *
+          Video link *
         </label>
         <input
           type="url"
@@ -230,7 +230,7 @@ export default function VideoForm({
             className={styles.cancelButton}
             disabled={loading}
           >
-            Annuler
+            Cancel
           </button>
         )}
         <button
@@ -238,7 +238,7 @@ export default function VideoForm({
           className={styles.submitButton}
           disabled={loading}
         >
-          {loading ? 'Sauvegarde...' : editingVideo ? 'Mettre à jour' : 'Ajouter la vidéo'}
+          {loading ? 'Saving...' : editingVideo ? 'Update' : 'Add video'}
         </button>
       </div>
     </form>

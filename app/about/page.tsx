@@ -1,6 +1,6 @@
-// page de test
 import CardGrid from "../components/CardGrid";
 import { Navbar } from "../components/Navbar";
+import { Footer } from "../components/Footer";
 
 export default function Home() {
   return (
@@ -16,6 +16,7 @@ export default function Home() {
           <CardGrid />
         </section>
       </main>
+      <Footer />
     </div>
   );
 }

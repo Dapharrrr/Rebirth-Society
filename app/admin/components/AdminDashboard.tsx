@@ -96,7 +96,7 @@ export default function AdminDashboard() {
   }
 
   if (loading) {
-    return <div className={styles.loading}>Chargement des données...</div>
+    return <div className={styles.loading}>Loading data...</div>
   }
 
   if (error) {
@@ -115,7 +115,7 @@ export default function AdminDashboard() {
         <Navbar />
       <div className={styles.section}>
         <h2 className={styles.sectionTitle}>
-          {editingVideo ? 'Modifier la vidéo' : 'Ajouter une nouvelle vidéo'}
+          {editingVideo ? 'Modify video' : 'Add a new video'}
         </h2>
         <VideoForm
           packs={packs}
@@ -128,7 +128,7 @@ export default function AdminDashboard() {
 
       <div className={styles.section}>
         <h2 className={styles.sectionTitle}>
-          Liste des vidéos ({videos.length})
+          Videos list ({videos.length})
         </h2>
         <VideoList
           videos={videos}

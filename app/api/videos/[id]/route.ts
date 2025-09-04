@@ -60,7 +60,7 @@ export async function PUT(request: NextRequest, { params }: Props) {
 
     if (!existingVideo) {
       return NextResponse.json(
-        { error: 'Vidéo non trouvée' },
+        { error: 'Video not found' },
         { status: 404 }
       )
     }

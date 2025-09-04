@@ -3,6 +3,7 @@
 import "./login.scss";
 import { useState } from "react";
 import { Navbar } from "../components/Navbar";
+import { Footer } from "../components/Footer";
 
 export default function LoginPage() {
   const [mode, setMode] = useState<"login" | "register">("login");
@@ -116,6 +117,7 @@ export default function LoginPage() {
         )}
       </div>
     </main>
+    <Footer />
     </>
   );
 }

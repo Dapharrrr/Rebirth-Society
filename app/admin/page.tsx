@@ -8,7 +8,7 @@ export default function AdminPage() {
       <header className={styles.header}>
       </header>
 
-      <Suspense fallback={<div className={styles.loading}>Chargement...</div>}>
+      <Suspense fallback={<div className={styles.loading}>Loading...</div>}>
         <AdminDashboard />
       </Suspense>
     </div>

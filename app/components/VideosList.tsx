@@ -203,7 +203,7 @@ export default function VideosList({ videos, packId, styles, price, productName 
                         <div>
                           <video
                             src={modal.video!.link}
-                            onError={() => setPlayError('Impossible de lire cette vidéo. Vérifiez le lien ou le format (ex: MP4).')}
+                            onError={() => setPlayError('Impossible to watch this video. Please verify the link or format (ex: MP4).')}
                             controls
                             preload="metadata"
                             style={{ width: '100%', borderRadius: 8, background: '#000' }}

@@ -48,7 +48,7 @@ export function CardGrid() {
   if (loading) {
     return (
       <section className={styles.grid} aria-label="Packs loading">
-        <div className={styles.loading}>Chargement des packs...</div>
+        <div className={styles.loading}>Packs loading...</div>
       </section>
     );
   }

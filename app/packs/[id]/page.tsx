@@ -80,10 +80,10 @@ export default async function PackPage({ params }: PackPageProps) {
           <div className={styles.meta}>
             <span className={styles.price}>${pack.price.toFixed(2)}</span>
             <span className={styles.videoCount}>
-              {pack._count.videos} vidéo{pack._count.videos > 1 ? 's' : ''}
+              {pack._count.videos} video{pack._count.videos > 1 ? 's' : ''}
             </span>
             <span className={styles.duration}>
-              {formatDuration(totalDuration)} au total
+              {formatDuration(totalDuration)} in total
             </span>
           </div>
 
@@ -94,7 +94,7 @@ export default async function PackPage({ params }: PackPageProps) {
       </div>
 
       <section className={styles.videosSection}>
-        <h2 className={styles.sectionTitle}>Contenu du pack</h2>
+        <h2 className={styles.sectionTitle}>Pack's content</h2>
         <div className={styles.videosList}>
           {/* Use client-side VideosList which verifies payment on return */}
 
