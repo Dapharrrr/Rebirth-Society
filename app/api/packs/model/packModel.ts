@@ -3,4 +3,5 @@ export interface Pack {
     name: string;
     description: string;
     price: number;
+    image: string;
 }

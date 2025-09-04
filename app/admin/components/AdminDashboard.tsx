@@ -12,8 +12,8 @@ type Video = {
   description: string
   duration: number
   link: string
-  createdAt: string
-  updatedAt: string
+  createdAt?: string
+  updatedAt?: string
   packId?: string // Ajout optionnel
   pack?: { // Rendre pack optionnel
     id: string
