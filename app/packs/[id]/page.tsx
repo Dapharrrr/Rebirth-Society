@@ -3,6 +3,8 @@ import { prisma } from '../../lib/prisma'
 import Image from 'next/image'
 import styles from './pack-detail.module.scss'
 import { Navbar } from "../../components/Navbar";
+import BuyButton from '../../components/BuyButton';
+import VideosList from '../../components/VideosList';
 
 interface PackPageProps {
   params: {
@@ -21,6 +23,7 @@ async function getPackById(id: string) {
             description: true,
             duration: true,
             createdAt: true,
+            link: true,
           },
           orderBy: {
             createdAt: 'asc'
@@ -85,10 +88,7 @@ export default async function PackPage({ params }: PackPageProps) {
           </div>
 
           <div className={styles.actions}>
-            <button className={styles.buyButton}>
-              Acheter ce pack
-            </button>
-
+            <BuyButton price={pack.price} productName={pack.name} packId={pack.id} />
           </div>
         </div>
       </div>
@@ -96,20 +96,9 @@ export default async function PackPage({ params }: PackPageProps) {
       <section className={styles.videosSection}>
         <h2 className={styles.sectionTitle}>Contenu du pack</h2>
         <div className={styles.videosList}>
-          {pack.videos.map((video, index) => (
-            <div key={video.id} className={styles.videoItem}>
-              <div className={styles.videoNumber}>
-                {(index + 1).toString().padStart(2, '0')}
-              </div>
-              <div className={styles.videoInfo}>
-                <h3 className={styles.videoTitle}>{video.title}</h3>
-                <p className={styles.videoDescription}>{video.description}</p>
-              </div>
-              <div className={styles.videoDuration}>
-                {formatDuration(video.duration)}
-              </div>
-            </div>
-          ))}
+          {/* Use client-side VideosList which verifies payment on return */}
+
+          <VideosList videos={pack.videos} packId={pack.id} styles={styles} price={pack.price} productName={pack.name} />
         </div>
       </section>
     </div>

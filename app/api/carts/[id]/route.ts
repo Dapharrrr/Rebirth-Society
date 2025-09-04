@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextRequest } from 'next/server';
-import { PackController } from '../controller/cartController';
+import { CartController } from '../controller/cartController';
 
-const packController = new PackController();
+const cartController = new CartController();
 
 export async function GET(request: NextRequest, context: any) {
-  return packController.getPackById(request, context.params.id);
+  return cartController.getCartById(request, context.params.id);
 }
 
 // export async function PUT(request: NextRequest, context: any) {
