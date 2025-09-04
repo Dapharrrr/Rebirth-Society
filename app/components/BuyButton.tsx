@@ -132,8 +132,8 @@ export default function BuyButton({ price, productName = 'Pack', packId }: Props
       {purchasedModalOpen && (
         <div style={overlayStyle} role="dialog" aria-modal="true" onClick={() => setPurchasedModalOpen(false)}>
           <div style={modalStyle} onClick={(e) => e.stopPropagation()}>
-            <h3 style={{ marginTop: 0 }}>You already own this pack</h3>
-            <p>You cannot purchase the same pack again with this account.</p>
+            <h3 style={{ marginTop: 0, color: '#000' }}>You already own this pack</h3>
+            <p style={{ color: '#000' }}>You cannot purchase the same pack again with this account.</p>
             <div style={{ marginTop: 12 }}>
               <button style={primaryBtn} onClick={() => setPurchasedModalOpen(false)}>
                 Close
