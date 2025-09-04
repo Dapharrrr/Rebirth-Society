@@ -1,0 +1,63 @@
+
+.login-page {
+	min-height: 100vh;
+	padding-top: 72px; /* leave space for fixed navbar */
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 2rem;
+}
+
+.card {
+	width: 100%;
+	max-width: 420px;
+	background: #fff;
+	padding: 1.5rem;
+	border-radius: 8px;
+	box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+}
+
+.title {
+	font-size: 1.25rem;
+	font-weight: 600;
+	margin-bottom: 1rem;
+}
+
+.tabs {
+	display: flex;
+	gap: 8px;
+	margin-bottom: 1rem;
+}
+
+.tab {
+	flex: 1;
+	padding: 0.5rem 0.75rem;
+	border-radius: 6px;
+	background: #efefef;
+	border: none;
+	cursor: pointer;
+}
+
+.tab.active {
+	background: #2563eb;
+	color: #fff;
+}
+
+.error { color: #b91c1c; margin-bottom: .75rem; }
+.message { color: #065f46; margin-bottom: .75rem; }
+
+.form { display: flex; flex-direction: column; gap: .6rem; margin-bottom: .9rem; }
+.input {
+	padding: .6rem .75rem;
+	border: 1px solid #d1d5db;
+	border-radius: 6px;
+}
+
+.btn { padding: .6rem .75rem; border-radius: 6px; border: none; cursor: pointer; }
+.btn-primary { background: #2563eb; color: #fff; width: 100%; }
+
+.or { text-align: center; color: #6b7280; margin: .8rem 0; }
+
+.btn-google { display: none; }
+.google-icon { display: none; }
+
