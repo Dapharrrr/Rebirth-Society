@@ -17,6 +17,9 @@ export default function Home() {
           </p>
         </div>
       </main>
+
+      <center><iframe width="560" height="315" src="https://www.youtube.com/embed/8KMXX7vM4ds?autoplay=1&mute=1&controls=0&modestbranding=1&showinfo=0&rel=0" allow="autoplay" frameborder="0"></iframe></center>
+
         
         {/* Section Cards */}
         <section style={{ width: "100%", marginTop: 32 }}>
