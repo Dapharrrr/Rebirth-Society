@@ -41,8 +41,8 @@ const Footer: React.FC = () => {
         <div className={styles.footerRight}>
           <h4>Follow Us</h4>
           <div className={styles.socialLinks}>
-            <a href="#" aria-label="Instagram">📷</a>
-            <a href="#" aria-label="Facebook">📘</a>
+            <a href="https://www.instagram.com/rebirthsocietypantin?utm_source=ig_web_button_share_sheet&igsh=MXhleHcyMmZ4ZTBlaA==" target="blank" aria-label="Instagram">📷</a>
+            <a href="https://www.facebook.com/people/Rebirth-Society/61555683249148/" target="blank" aria-label="Facebook">📘</a>
           </div>
         </div>
       </div>

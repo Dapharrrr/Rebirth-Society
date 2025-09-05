@@ -121,7 +121,7 @@ export default function VideosList({ videos, packId, price, productName }: { vid
   const overlayStyle: React.CSSProperties = {
     position: 'fixed',
     inset: 0,
-    backgroundColor: 'rgba(0,0,0,0.6)',
+    backgroundColor: 'rgba(80, 80, 80, 0.6)',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -130,7 +130,7 @@ export default function VideosList({ videos, packId, price, productName }: { vid
   };
 
   const modalStyle: React.CSSProperties = {
-    background: '#fff',
+    background: '#000000ff',
     borderRadius: 8,
     maxWidth: 800,
     width: '100%',
